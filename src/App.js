@@ -18,7 +18,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const {persistor, store} = configureStore();
 const entireScreenWidth = Dimensions.get('window').width;
-EStyleSheet.build({$rem: entireScreenWidth / 414});
+EStyleSheet.build({$rem: entireScreenWidth / 320});
 
 const App = () => {
 	return (

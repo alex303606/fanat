@@ -4,6 +4,11 @@ import RegisterScreen from '../screens/RegisterScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import Header from '../components/Header';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import { Dimensions } from 'react-native';
+const entireScreenWidth = Dimensions.get('window').width;
+
+EStyleSheet.build({$rem: entireScreenWidth / 320});
 
 const Stack = createStackNavigator();
 

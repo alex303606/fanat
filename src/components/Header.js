@@ -1,7 +1,8 @@
 import { Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 const entireScreenWidth = Dimensions.get('window').width;
-EStyleSheet.build({$rem: entireScreenWidth / 414});
+EStyleSheet.build({$rem: entireScreenWidth / 320});
+
 const styles = EStyleSheet.create({
 	$fontSize: '18rem',
 });
