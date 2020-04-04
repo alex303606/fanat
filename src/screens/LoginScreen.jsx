@@ -4,7 +4,9 @@ import {
 	View,
 	TouchableOpacity,
 	ImageBackground,
-	Text, ScrollView,
+	Text,
+	ScrollView,
+	Dimensions,
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import backGround from '../assets/img/background.jpg';
@@ -15,11 +17,10 @@ const styles = EStyleSheet.create({
 		flex: 1,
 		paddingHorizontal: '30rem',
 		paddingBottom: '40rem',
-		paddingTop: '165rem',
+		paddingTop: '75rem',
 	},
 	backGround: {
-		width: '100%',
-		height: '100%',
+		width: Dimensions.get('window').width,
 	},
 	input: {
 		borderWidth: 1,
@@ -102,8 +103,8 @@ const LoginScreen = (props) => {
 							<Text style={styles.buttonText}>Войти</Text>
 						</TouchableOpacity>
 					</View>
-					<KeyboardSpacer style={{backgroundColor: '#19112C'}}/>
 				</ImageBackground>
+				<KeyboardSpacer style={{backgroundColor: '#19112C'}}/>
 			</ScrollView>
 		</View>
 	);
