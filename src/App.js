@@ -14,6 +14,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Loader from './components/Loader';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import configureStore from './store/configureStore';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const {persistor, store} = configureStore();
 const entireScreenWidth = Dimensions.get('window').width;
@@ -23,7 +24,9 @@ const App = () => {
 	return (
 		<Provider store={store}>
 			<PersistGate loading={<Loader/>} persistor={persistor}>
-				<AppNavigationState/>
+				<SafeAreaProvider>
+					<AppNavigationState/>
+				</SafeAreaProvider>
 			</PersistGate>
 		</Provider>
 	);
