@@ -302,10 +302,20 @@ PODS:
     - React
   - RNGestureHandler (1.6.1):
     - React
+  - RNImageCropPicker (0.28.0):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.28.0)
+    - RSKImageCropper
+  - RNImageCropPicker/QBImagePickerController (0.28.0):
+    - React-Core
+    - React-RCTImage
+    - RSKImageCropper
   - RNReanimated (1.7.1):
     - React
   - RNScreens (2.4.0):
     - React
+  - RSKImageCropper (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -348,6 +358,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -365,6 +376,7 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - OpenSSL-Universal
+    - RSKImageCropper
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -426,6 +438,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -474,11 +488,13 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
   RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNImageCropPicker: cf129d17e042ce3e96fb9ada967c28f21f977c82
   RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
   RNScreens: b5c0e1b2b04512919e78bd3898e144a157ce2363
+  RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   Yoga: 50fb6eb13d2152e7363293ff603385db380815b1
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 13367cb034a8c0a9ae37cf100d2497cbd5089191
+PODFILE CHECKSUM: 69238b744d617e0bd0dd65c8b65ac8fc993f92e5
 
 COCOAPODS: 1.9.0.beta.2

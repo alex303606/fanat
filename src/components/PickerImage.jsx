@@ -47,7 +47,8 @@ export default class PickerImage extends Component {
 				if (!image || !image.path) {
 					return;
 				}
-				let avatarSource = {uri: `data:${image.mime};base64,${image.data}`};
+				let avatarSource = {uri: image.path};
+				debugger
 				this.props.savePhoto(avatarSource);
 			}).catch((err) => {
 				console.log('openCropper error = ' + err);
