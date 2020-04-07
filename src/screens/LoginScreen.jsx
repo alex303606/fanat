@@ -3,24 +3,18 @@ import {
 	TextInput,
 	View,
 	TouchableOpacity,
-	ImageBackground,
 	Text,
-	ScrollView,
-	Dimensions,
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import backGround from '../assets/img/background.jpg';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
+import ScreenContainer from '../components/ScreenContainer';
+import Button from '../components/Button';
 
 const styles = EStyleSheet.create({
 	page: {
 		flex: 1,
 		paddingHorizontal: '30rem',
-		paddingBottom: '40rem',
-		paddingTop: '75rem',
-	},
-	backGround: {
-		width: Dimensions.get('window').width,
+		paddingVertical: '30rem',
+		flexDirection: 'column',
 	},
 	input: {
 		borderWidth: 1,
@@ -30,34 +24,28 @@ const styles = EStyleSheet.create({
 		borderRadius: 5,
 		fontSize: '14rem',
 		color: 'white',
-		marginBottom: '50rem',
+		marginVertical: '25rem',
 	},
 	forget: {
 		color: '#D51E49',
 		fontSize: '14rem',
 		lineHeight: '16rem',
-		marginBottom: '50rem',
+		marginVertical: '25rem',
 	},
 	registration: {
 		color: 'white',
 		fontSize: '14rem',
 		lineHeight: '16rem',
-		marginBottom: '75rem',
-	},
-	button: {
-		backgroundColor: '#D51E49',
-		height: '42rem',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: 5,
-	},
-	buttonText: {
-		color: 'white',
-		fontSize: '14rem',
-		lineHeight: '16rem',
+		marginVertical: '25rem',
 	},
 	content: {
 		alignItems: 'center',
+		justifyContent: 'center',
+		flexGrow: 1,
+	},
+	fields: {
+		flexGrow: 1,
+		flexDirection: 'column',
 		justifyContent: 'center',
 	},
 });
@@ -67,46 +55,38 @@ const LoginScreen = (props) => {
 	const [password, setPassword] = useState('');
 	const changeLoginHandler = value => setLogin(value);
 	const changePasswordHandler = value => setPassword(value);
+	const loginHandler = () => alert('Войти');
+	const forgetPassHandler = () => alert('Забыли пароль?');
+	const navigateToRegistration = () => props.navigation.navigate('Register');
+	
 	return (
-		<View style={{flex: 1, backgroundColor: '#19112C'}}>
-			<ScrollView
-				keyboardShouldPersistTaps='handled'
-				scrollEnabled={true}
-				showsVerticalScrollIndicator={false}
-				contentContainerStyle={{flexGrow: 1}}
-			>
-				<ImageBackground source={backGround} style={styles.backGround}>
-					<View style={styles.page}>
-						<TextInput
-							style={styles.input}
-							value={login}
-							onChangeText={changeLoginHandler}
-							underlineColorAndroid='transparent'
-							placeholder={'Логин'}
-							placeholderTextColor={'white'}
-						/>
-						<TextInput
-							style={styles.input}
-							value={password}
-							onChangeText={changePasswordHandler}
-							underlineColorAndroid='transparent'
-							placeholder={'Пароль'}
-							placeholderTextColor={'white'}
-						/>
-						<View style={styles.content}>
-							<Text style={styles.forget}>Забыли пароль?</Text>
-							<Text style={styles.registration}>Регистрация</Text>
-						</View>
-						<TouchableOpacity
-							style={styles.button}
-							onPress={() => props.navigation.navigate('Register')}>
-							<Text style={styles.buttonText}>Войти</Text>
-						</TouchableOpacity>
-					</View>
-				</ImageBackground>
-				<KeyboardSpacer style={{backgroundColor: '#19112C'}}/>
-			</ScrollView>
-		</View>
+		<ScreenContainer>
+			<View style={styles.page}>
+				<View style={styles.fields}>
+					<TextInput
+						style={styles.input}
+						value={login}
+						onChangeText={changeLoginHandler}
+						underlineColorAndroid='transparent'
+						placeholder={'Логин'}
+						placeholderTextColor={'white'}
+					/>
+					<TextInput
+						style={styles.input}
+						value={password}
+						onChangeText={changePasswordHandler}
+						underlineColorAndroid='transparent'
+						placeholder={'Пароль'}
+						placeholderTextColor={'white'}
+					/>
+				</View>
+				<View style={styles.content}>
+					<Text onPress={forgetPassHandler} style={styles.forget}>Забыли пароль?</Text>
+					<Text onPress={navigateToRegistration} style={styles.registration}>Регистрация</Text>
+				</View>
+				<Button onPress={loginHandler} title={'Войти'}/>
+			</View>
+		</ScreenContainer>
 	);
 };
 
