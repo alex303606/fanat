@@ -4,7 +4,7 @@ import {
 	View,
 	NativeModules,
 	TouchableOpacity,
-	Text,
+	Text, Dimensions,
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -30,6 +30,7 @@ export default class PickerImage extends Component {
 	selectPhotoTapped = () => {
 		ImagePicker.openPicker({
 			cropping: false,
+			compressImageQuality: 1,
 			width: 500,
 			height: 500,
 			includeExif: true,
@@ -40,10 +41,11 @@ export default class PickerImage extends Component {
 			}
 			ImagePicker.openCropper({
 				path: response.path,
-				width: 120,
-				height: 120,
+				width: Dimensions.get('window').width,
+				height: Dimensions.get('window').width,
 				includeBase64: true,
 			}).then(image => {
+				console.log(image);
 				if (!image || !image.path) {
 					return;
 				}
