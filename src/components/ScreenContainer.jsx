@@ -14,7 +14,7 @@ const styles = EStyleSheet.create({
 
 const ScreenContainer = (props) => {
 	const insets = useSafeArea();
-	
+
 	return (
 		<View style={{flex: 1, backgroundColor: '#19112C'}}>
 			<ScrollView

@@ -15,7 +15,7 @@ IonIcon.loadFont();
 const styles = EStyleSheet.create({
 	page: {
 		flex: 1,
-		paddingHorizontal: '30rem',
+		paddingHorizontal: '20rem',
 		paddingVertical: '30rem',
 		flexDirection: 'column',
 	},
@@ -95,13 +95,6 @@ const LoginScreen = (props) => {
 	const [passwordSecure, setPasswordSecure] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const changePasswordSecure = () => setPasswordSecure(!passwordSecure);
-
-	const changeLoginHandler = value => {
-		setLogin(value);
-	};
-	const changePasswordHandler = value => {
-		setPassword(value);
-	};
 	const loginHandler = () => {
 		setLoginIsValid(!!login);
 		setPassIsValid(!!password);
@@ -124,6 +117,18 @@ const LoginScreen = (props) => {
 			/>
 		</TouchableOpacity>
 	);
+	
+	const changeFieldValue = name => value => {
+		switch (name) {
+			case 'login':
+				return setLogin(value.replace(/ /g, ''));
+			case 'password':
+				return setPassword(value.replace(/ /g, ''));
+			default:
+				return;
+		}
+	};
+	
 	return (
 		<ScreenContainer>
 			<View style={styles.page}>
@@ -132,11 +137,12 @@ const LoginScreen = (props) => {
 						<TextInput
 							style={styles.input}
 							value={login}
-							onChangeText={changeLoginHandler}
+							onChangeText={changeFieldValue('login')}
 							underlineColorAndroid='transparent'
 							placeholder={'Логин'}
 							placeholderTextColor={'white'}
 							autoCapitalize={'none'}
+							autoCompleteType={'off'}
 						/>
 						{!loginIsValid && <Text style={styles.error}>Заполните поле логин</Text>}
 					</View>
@@ -145,12 +151,13 @@ const LoginScreen = (props) => {
 							<TextInput
 								style={styles.inputPass}
 								value={password}
-								onChangeText={changePasswordHandler}
+								onChangeText={changeFieldValue('password')}
 								underlineColorAndroid='transparent'
 								placeholder={'Пароль'}
 								secureTextEntry={passwordSecure}
 								placeholderTextColor={'white'}
 								autoCapitalize={'none'}
+								autoCompleteType={'off'}
 							/>
 							{renderChangePasswordSecureButton()}
 						</View>
