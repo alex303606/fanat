@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 const styles = EStyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: 'red',
+		backgroundColor: 'black',
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
@@ -13,7 +13,7 @@ const styles = EStyleSheet.create({
 
 const Loader = () => (
 	<View style={styles.container}>
-		<ActivityIndicator size="large" color={'blue'}/>
+		<ActivityIndicator size="large" color={'white'}/>
 	</View>
 );
 
