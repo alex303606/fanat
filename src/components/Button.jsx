@@ -1,11 +1,10 @@
 import React from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 const styles = EStyleSheet.create({
 	button: {
-		backgroundColor: '#D51E49',
 		height: '42rem',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -19,12 +18,19 @@ const styles = EStyleSheet.create({
 });
 
 const Button = (props) => {
+	const pressHandler = () => props.disabled ? null : props.onPress();
+	
 	return (
 		<TouchableOpacity
 			activeOpacity={0.7}
-			style={styles.button}
-			onPress={props.onPress}>
-			<Text style={styles.buttonText}>{props.title}</Text>
+			style={[styles.button, {
+				backgroundColor: props.disabled ? 'rgba(213, 30, 73, 0.5)' : '#D51E49',
+			}]}
+			onPress={pressHandler}>
+			{props.loading ?
+				<ActivityIndicator size="large" color={'white'}/> :
+				<Text style={styles.buttonText}>{props.title}</Text>
+			}
 		</TouchableOpacity>
 	);
 };
@@ -32,6 +38,8 @@ const Button = (props) => {
 Button.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	title: PropTypes.string.isRequired,
+	disabled: PropTypes.bool,
+	loading: PropTypes.bool,
 };
 
 export default Button;

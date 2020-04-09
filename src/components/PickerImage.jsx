@@ -24,6 +24,12 @@ const styles = EStyleSheet.create({
 		justifyContent: 'center',
 		overflow: 'hidden',
 	},
+	text: {
+		fontSize: '14rem',
+		lineHeight: '16rem',
+		textAlign: 'center',
+		padding: '10rem',
+	}
 });
 
 export default class PickerImage extends Component {
@@ -68,7 +74,7 @@ export default class PickerImage extends Component {
 							style={{width: '100%', height: '100%'}}
 							resizeMode='contain'
 							source={this.props.avatar}
-						/> : <Text>PHOTO</Text>
+						/> : <Text style={styles.text}>ЗАГРУЗИТЬ ФОТО</Text>
 					}
 				</TouchableOpacity>
 			</View>
