@@ -214,6 +214,7 @@ const RegisterScreen = (props) => {
 						<View style={styles.row}>
 							<Text style={styles.label}>Логин:</Text>
 							<TextInput
+								autoFocus={true}
 								numberOfLines={1}
 								style={styles.input}
 								value={login}

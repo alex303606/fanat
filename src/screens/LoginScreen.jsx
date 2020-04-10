@@ -135,6 +135,7 @@ const LoginScreen = (props) => {
 				<View style={styles.fields}>
 					<View style={styles.row}>
 						<TextInput
+							autoFocus={true}
 							style={styles.input}
 							value={login}
 							onChangeText={changeFieldValue('login')}
