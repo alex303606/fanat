@@ -1,4 +1,4 @@
-import { SIGN_IN_SUCCESS } from './actionTypes';
+import { SIGN_IN_SUCCESS, SIGN_OUT } from './actionTypes';
 
 export const recoverAccountSendEmail = email => {
 	console.log(email);
@@ -41,4 +41,10 @@ export const loginUser = (data: {
 
 const loginUserSuccess = (data) => {
 	return {type: SIGN_IN_SUCCESS, data};
+};
+
+export const signOut = () => {
+	return dispatch => {
+		dispatch({type: SIGN_OUT});
+	};
 };
