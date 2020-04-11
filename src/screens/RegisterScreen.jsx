@@ -9,6 +9,9 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import CustomModal from '../components/CustomModal';
 import LoremText from '../components/LoremText';
+import { bindActionCreators } from 'redux';
+import { registerNewUser } from '../store/actions/profile';
+import { connect } from 'react-redux';
 
 const passReg = /^(?=.*\d)(?=.*[a-z]).{8,}/;
 const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -214,6 +217,16 @@ const RegisterScreen = (props) => {
 			return;
 		}
 		setLoading(true);
+		props.registerNewUser({
+			login,
+			phone,
+			email,
+			password,
+			confirmPassword: rePassword,
+		});
+		setTimeout(() => {
+			props.navigation.navigate('Login');
+		}, 2000);
 	};
 	
 	return (
@@ -293,7 +306,7 @@ const RegisterScreen = (props) => {
 								autoCompleteType={'tel'}
 							/>
 						</View>
-						{!phoneIsValid && <Text style={styles.error}>Не верный телефон</Text>}
+						{!phoneIsValid && <Text style={styles.error}>Не верный формат телефона</Text>}
 					</View>
 					<View style={styles.inputContainer}>
 						<View style={styles.row}>
@@ -308,7 +321,7 @@ const RegisterScreen = (props) => {
 								underlineColorAndroid='transparent'
 							/>
 						</View>
-						{!emailIsValid && <Text style={styles.error}>Не верный e-mail</Text>}
+						{!emailIsValid && <Text style={styles.error}>Не верный формат e-mail</Text>}
 					</View>
 				</View>
 				<View style={[styles.inputContainer, {paddingVertical: styles.$25}]}>
@@ -329,14 +342,14 @@ const RegisterScreen = (props) => {
 					<Button
 						loading={loading}
 						onPress={nextHandler}
-						title={'Далее'}
+						title={'Зарегистрироваться'}
 					/>
 				</View>
 			</View>
 			<CustomModal modalVisible={modalVisible} setModalVisible={changeModalVisibleHandler}>
 				<Text style={styles.modalTitle}>ПРАВИЛА</Text>
 				<ScrollView contentContainerStyle={{flexGrow: 1}}>
-				<LoremText style={{color: 'white', textAlign: 'justify'}}/>
+					<LoremText style={{color: 'white', textAlign: 'justify'}}/>
 				</ScrollView>
 				<View style={styles.footer}>
 					<Button
@@ -350,4 +363,11 @@ const RegisterScreen = (props) => {
 	);
 };
 
-export default RegisterScreen;
+const mapDispatchToProps = dispatch => {
+	return bindActionCreators({
+			registerNewUser,
+		},
+		dispatch);
+};
+
+export default connect(null, mapDispatchToProps)(RegisterScreen);

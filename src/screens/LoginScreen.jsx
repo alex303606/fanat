@@ -9,6 +9,9 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import { bindActionCreators } from 'redux';
+import { loginUser } from '../store/actions/profile';
+import { connect } from 'react-redux';
 
 IonIcon.loadFont();
 
@@ -102,8 +105,9 @@ const LoginScreen = (props) => {
 			return;
 		}
 		setLoading(true);
+		props.loginUser({login, password});
 	};
-	const forgetPassHandler = () => alert('Забыли пароль?');
+	const forgetPassHandler = () => props.navigation.navigate('Recovery');
 	const navigateToRegistration = () => props.navigation.navigate('Register');
 	const renderChangePasswordSecureButton = () => (
 		<TouchableOpacity
@@ -135,7 +139,6 @@ const LoginScreen = (props) => {
 				<View style={styles.fields}>
 					<View style={styles.row}>
 						<TextInput
-							autoFocus={true}
 							style={styles.input}
 							value={login}
 							onChangeText={changeFieldValue('login')}
@@ -178,5 +181,11 @@ const LoginScreen = (props) => {
 		</ScreenContainer>
 	);
 };
+const mapDispatchToProps = dispatch => {
+	return bindActionCreators({
+			loginUser,
+		},
+		dispatch);
+};
 
-export default LoginScreen;
+export default connect(null, mapDispatchToProps)(LoginScreen);

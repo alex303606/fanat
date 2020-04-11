@@ -6,13 +6,14 @@ import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/
 import Header from '../components/Header';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Dimensions } from 'react-native';
+import RecoveryAccount from '../screens/RecoveryAccount';
 const entireScreenWidth = Dimensions.get('window').width;
 
 EStyleSheet.build({$rem: entireScreenWidth / 320});
 
 const Stack = createStackNavigator();
 
-const AppNavigator = () => {
+const AuthNavigator = () => {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator
@@ -37,9 +38,16 @@ const AppNavigator = () => {
 						cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 					}}
 					component={RegisterScreen}/>
+				<Stack.Screen
+					name="Recovery"
+					options={{
+						title: 'Восстановление аккаунта',
+						cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+					}}
+					component={RecoveryAccount}/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
 };
 
-export default AppNavigator;
+export default AuthNavigator;
