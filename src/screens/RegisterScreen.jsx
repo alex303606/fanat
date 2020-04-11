@@ -223,6 +223,7 @@ const RegisterScreen = (props) => {
 			email,
 			password,
 			confirmPassword: rePassword,
+			photo: avatar,
 		});
 		setTimeout(() => {
 			props.navigation.navigate('Login');

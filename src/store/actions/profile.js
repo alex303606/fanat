@@ -20,14 +20,15 @@ export const registerNewUser = (data: {
 	phone: string,
 	email: string,
 	password: string,
-	confirmPassword: string
+	confirmPassword: string,
+	photo: { uri: string },
 }) => {
 	console.log(data);
 };
 
 export const loginUser = (data: {
 	login: string,
-	password: string
+	password: string,
 }) => {
 	console.log(data);
 	
