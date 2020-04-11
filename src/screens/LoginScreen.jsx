@@ -80,6 +80,10 @@ const styles = EStyleSheet.create({
 		right: '10rem',
 		marginTop: '-15rem',
 	},
+	authError: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+	},
 	error: {
 		color: '#D51E49',
 		fontSize: '14rem',
@@ -97,6 +101,7 @@ const LoginScreen = (props) => {
 	const [loginIsValid, setLoginIsValid] = useState(true);
 	const [passwordSecure, setPasswordSecure] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const [authError, setAuthError] = useState(false);
 	const changePasswordSecure = () => setPasswordSecure(!passwordSecure);
 	const loginHandler = () => {
 		setLoginIsValid(!!login);
@@ -106,6 +111,11 @@ const LoginScreen = (props) => {
 		}
 		setLoading(true);
 		props.loginUser({login, password});
+		
+		//error request
+		// setTimeout(() => {
+		// 	setAuthError(true);
+		// }, 2000);
 	};
 	const forgetPassHandler = () => props.navigation.navigate('Recovery');
 	const navigateToRegistration = () => props.navigation.navigate('Register');
@@ -167,7 +177,13 @@ const LoginScreen = (props) => {
 						</View>
 						{!passIsValid && <Text style={styles.error}>Заполните поле пароль</Text>}
 					</View>
+					{authError &&
+					<View style={styles.authError}>
+						<Text style={styles.error}>Неверный логин или паррль</Text>
+					</View>
+					}
 				</View>
+				
 				<View style={styles.content}>
 					<Text onPress={forgetPassHandler} style={styles.forget}>Забыли пароль?</Text>
 					<Text onPress={navigateToRegistration} style={styles.registration}>Регистрация</Text>

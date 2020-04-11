@@ -150,6 +150,8 @@ const RegisterScreen = (props) => {
 	const [passwordsIsMatch, setPasswordsIsMatch] = useState(true);
 	const [phoneIsValid, setPhoneIsValid] = useState(true);
 	const [modalVisible, changeModalVisible] = useState(false);
+	const [userAlreadyExist, setUserAlreadyExist] = useState(false);
+	const [emailAlreadyExist, setEmailAlreadyExist] = useState(false);
 	const changeRules = () => setRules(!rules);
 	const changePasswordSecure = () => setPasswordSecure(!passwordSecure);
 	const changeRePasswordSecure = () => setRePasswordSecure(!rePasswordSecure);
@@ -226,6 +228,8 @@ const RegisterScreen = (props) => {
 			photo: avatar,
 		});
 		setTimeout(() => {
+			//setUserAlreadyExist(true); //error handler
+			//setEmailAlreadyExist(true); //error handler
 			props.navigation.navigate('Login');
 		}, 2000);
 	};
@@ -252,6 +256,7 @@ const RegisterScreen = (props) => {
 							/>
 						</View>
 						{!loginIsValid && <Text style={styles.error}>Заполните поле логин</Text>}
+						{userAlreadyExist && <Text style={styles.error}>Такой логин уже есть</Text>}
 					</View>
 					
 					<View style={{flexDirection: 'column'}}>
@@ -323,6 +328,7 @@ const RegisterScreen = (props) => {
 							/>
 						</View>
 						{!emailIsValid && <Text style={styles.error}>Не верный формат e-mail</Text>}
+						{emailAlreadyExist && <Text style={styles.error}>Такая почта уже зарегистрирована</Text>}
 					</View>
 				</View>
 				<View style={[styles.inputContainer, {paddingVertical: styles.$25}]}>
