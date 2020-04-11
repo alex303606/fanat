@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenContainer from '../components/ScreenContainer';
 import Button from '../components/Button';
@@ -7,6 +7,8 @@ import PickerImage from '../components/PickerImage';
 import { TextInputMask } from 'react-native-masked-text';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import CustomModal from '../components/CustomModal';
+import LoremText from '../components/LoremText';
 
 const passReg = /^(?=.*\d)(?=.*[a-z]).{8,}/;
 const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -118,6 +120,13 @@ const styles = EStyleSheet.create({
 		flexGrow: 1,
 	},
 	$30: '30rem',
+	modalTitle: {
+		color: 'white',
+		fontSize: 30,
+		fontWeight: 'bold',
+		textAlign: 'center',
+		marginBottom: 20,
+	},
 });
 
 const RegisterScreen = (props) => {
@@ -137,10 +146,15 @@ const RegisterScreen = (props) => {
 	const [emailIsValid, setEmailIsValid] = useState(true);
 	const [passwordsIsMatch, setPasswordsIsMatch] = useState(true);
 	const [phoneIsValid, setPhoneIsValid] = useState(true);
+	const [modalVisible, changeModalVisible] = useState(false);
 	const changeRules = () => setRules(!rules);
 	const changePasswordSecure = () => setPasswordSecure(!passwordSecure);
 	const changeRePasswordSecure = () => setRePasswordSecure(!rePasswordSecure);
-	
+	const changeModalVisibleHandler = () => changeModalVisible(!modalVisible);
+	const acceptRules = () => {
+		setRules(true);
+		changeModalVisible(false);
+	};
 	const changeFieldValue = name => value => {
 		switch (name) {
 			case 'login':
@@ -244,8 +258,7 @@ const RegisterScreen = (props) => {
 						{!passIsValid &&
 						<Text style={styles.error}>
 							Пароль должен содержать как минимум одну цифру и строчную букву и быть не менее 8 символов.
-						</Text>
-						}
+						</Text>}
 					</View>
 					
 					<View style={styles.inputContainer}>
@@ -263,9 +276,7 @@ const RegisterScreen = (props) => {
 								{renderChangeRePasswordSecureButton()}
 							</View>
 						</View>
-						{!passwordsIsMatch &&
-						<Text style={styles.error}>Пароли не совпадают</Text>
-						}
+						{!passwordsIsMatch && <Text style={styles.error}>Пароли не совпадают</Text>}
 					</View>
 					<View style={styles.inputContainer}>
 						<View style={styles.row}>
@@ -282,9 +293,7 @@ const RegisterScreen = (props) => {
 								autoCompleteType={'tel'}
 							/>
 						</View>
-						{!phoneIsValid &&
-						<Text style={styles.error}>Не верный телефон</Text>
-						}
+						{!phoneIsValid && <Text style={styles.error}>Не верный телефон</Text>}
 					</View>
 					<View style={styles.inputContainer}>
 						<View style={styles.row}>
@@ -299,9 +308,7 @@ const RegisterScreen = (props) => {
 								underlineColorAndroid='transparent'
 							/>
 						</View>
-						{!emailIsValid &&
-						<Text style={styles.error}>Не верный e-mail</Text>
-						}
+						{!emailIsValid && <Text style={styles.error}>Не верный e-mail</Text>}
 					</View>
 				</View>
 				<View style={[styles.inputContainer, {paddingVertical: styles.$25}]}>
@@ -313,11 +320,11 @@ const RegisterScreen = (props) => {
 						/>
 						<Text style={styles.checkBoxLabel}>С правилами ознакомлен</Text>
 					</View>
-					{!familiar &&
-					<Text style={styles.error}>Ознакомьтесь с правилами</Text>
-					}
+					{!familiar && <Text style={styles.error}>Ознакомьтесь с правилами</Text>}
 				</View>
-				<View style={styles.rules}><Text style={styles.rulesText}>Правила</Text></View>
+				<View style={styles.rules}>
+					<Text onPress={changeModalVisibleHandler} style={styles.rulesText}>Правила</Text>
+				</View>
 				<View style={styles.footer}>
 					<Button
 						loading={loading}
@@ -326,6 +333,19 @@ const RegisterScreen = (props) => {
 					/>
 				</View>
 			</View>
+			<CustomModal modalVisible={modalVisible} setModalVisible={changeModalVisibleHandler}>
+				<Text style={styles.modalTitle}>ПРАВИЛА</Text>
+				<ScrollView contentContainerStyle={{flexGrow: 1}}>
+				<LoremText style={{color: 'white', textAlign: 'justify'}}/>
+				</ScrollView>
+				<View style={styles.footer}>
+					<Button
+						loading={loading}
+						onPress={acceptRules}
+						title={'Принять'}
+					/>
+				</View>
+			</CustomModal>
 		</ScreenContainer>
 	);
 };
