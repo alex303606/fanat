@@ -226,12 +226,17 @@ const RegisterScreen = (props) => {
 			password,
 			confirmPassword: rePassword,
 			photo: avatar,
+		}).then(data => {
+			if (!data.result) {
+				if (!!data.message) {
+					setUserAlreadyExist(data.message.includes(login));
+					setEmailAlreadyExist(data.message.includes(email));
+					setLoading(false);
+				}
+			} else {
+				props.navigation.navigate('Login');
+			}
 		});
-		setTimeout(() => {
-			//setUserAlreadyExist(true); //error handler
-			//setEmailAlreadyExist(true); //error handler
-			props.navigation.navigate('Login');
-		}, 2000);
 	};
 	
 	return (
@@ -250,6 +255,7 @@ const RegisterScreen = (props) => {
 								numberOfLines={1}
 								style={styles.input}
 								value={login}
+								autoCompleteType={'off'}
 								onChangeText={changeFieldValue('login')}
 								underlineColorAndroid='transparent'
 								autoCapitalize={'none'}
@@ -266,6 +272,7 @@ const RegisterScreen = (props) => {
 								<TextInput
 									style={styles.inputPass}
 									value={password}
+									autoCompleteType={'off'}
 									onChangeText={changeFieldValue('password')}
 									underlineColorAndroid='transparent'
 									secureTextEntry={passwordSecure}
@@ -287,6 +294,7 @@ const RegisterScreen = (props) => {
 								<TextInput
 									style={styles.inputPass}
 									value={rePassword}
+									autoCompleteType={'off'}
 									onChangeText={changeFieldValue('rePassword')}
 									underlineColorAndroid='transparent'
 									secureTextEntry={rePasswordSecure}

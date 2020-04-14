@@ -1,7 +1,20 @@
 import { SIGN_IN_SUCCESS, SIGN_OUT } from './actionTypes';
+import axios from 'axios';
 
-export const recoverAccountSendEmail = email => {
-	console.log(email);
+export const recoverAccountSendSms = login => {
+	const params = {
+		TYPE: 'remember_password',
+		LOGIN: login,
+	};
+	return dispatch => {
+		return axios.post('', params).then(
+			response => {
+				if (response && response.data) {
+					return response.data;
+				}
+			},
+		);
+	};
 };
 
 export const recoverAccountSendCode = code => {
@@ -15,15 +28,24 @@ export const recoverAccountSendPass = (data: {
 	console.log(data);
 };
 
-export const registerNewUser = (data: {
-	login: string,
-	phone: string,
-	email: string,
-	password: string,
-	confirmPassword: string,
-	photo: { uri: string },
-}) => {
-	console.log(data);
+export const registerNewUser = ({login, phone, email, password, confirmPassword}) => {
+	const params = {
+		TYPE: 'register',
+		LOGIN: login,
+		PHONE: phone,
+		EMAIL: email,
+		PASSWORD: password,
+		CONFIRM_PASSWORD: confirmPassword,
+	};
+	return dispatch => {
+		return axios.post('', params).then(
+			response => {
+				if (response && response.data) {
+					return response.data;
+				}
+			},
+		);
+	};
 };
 
 export const loginUser = (data: {

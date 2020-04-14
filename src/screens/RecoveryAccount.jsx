@@ -5,10 +5,9 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Button from '../components/Button';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { recoverAccountSendCode, recoverAccountSendEmail, recoverAccountSendPass } from '../store/actions/profile';
+import { recoverAccountSendCode, recoverAccountSendSms, recoverAccountSendPass } from '../store/actions/profile';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const passReg = /^(?=.*\d)(?=.*[a-z]).{8,}/;
 
 const styles = EStyleSheet.create({
@@ -82,19 +81,19 @@ const styles = EStyleSheet.create({
 });
 
 const RecoveryAccount = (props) => {
-	const [email, changeEmail] = useState('');
+	const [login, changeLogin] = useState('');
 	const [code, changeCode] = useState('');
 	const [password, setPassword] = useState('');
 	const [rePassword, setRePassword] = useState('');
 	const [passwordSecure, setPasswordSecure] = useState(true);
 	const [rePasswordSecure, setRePasswordSecure] = useState(true);
-	const [emailIsValid, setEmailIsValid] = useState(true);
+	const [loginIsValid, setLoginIsValid] = useState(true);
 	const [codeIsValid, setCodeIsValid] = useState(false);
 	const [codeIsInCorrect, setCodeIsInCorrect] = useState(false);
 	const [userNotExist, seUserNotExist] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [passwordsIsMatch, setPasswordsIsMatch] = useState(true);
-	const [emailSended, setEmailSended] = useState(false);
+	const [smsSended, setSmsSended] = useState(false);
 	const [codeSended, setCodeSended] = useState(false);
 	const [passIsValid, setPassIsValid] = useState(true);
 	const changePasswordSecure = () => setPasswordSecure(!passwordSecure);
@@ -106,8 +105,8 @@ const RecoveryAccount = (props) => {
 				return setPassword(value.replace(/ /g, ''));
 			case 'rePassword':
 				return setRePassword(value.replace(/ /g, ''));
-			case 'email':
-				return changeEmail(value.replace(/ /g, ''));
+			case 'login':
+				return changeLogin(value.replace(/ /g, ''));
 			case 'code':
 				return changeCode(value.replace(/[^0-9.]/g, ''));
 			default:
@@ -157,7 +156,7 @@ const RecoveryAccount = (props) => {
 			}
 			return;
 		}
-		if (emailSended) {
+		if (smsSended) {
 			setCodeIsValid(code.length < 4);
 			if (code.length > 3) {
 				setLoading(true);
@@ -176,37 +175,34 @@ const RecoveryAccount = (props) => {
 			}
 			return;
 		}
-		setEmailIsValid(regEmail.test(email));
-		if (regEmail.test(email)) {
+		setLoginIsValid(!!login);
+		if (!!login) {
 			setLoading(true);
-			props.recoverAccountSendEmail(email);
-			setTimeout(() => {
-				setEmailSended(true);
-				setLoading(false);
-			}, 2000);
-			
-			// request is error
-			// setTimeout(() => {
-			// 	seUserNotExist(true);
-			// 	setLoading(false);
-			// }, 2000);
+			props.recoverAccountSendSms(login).then(data => {
+				if (!data.result) {
+					seUserNotExist(true);
+					setLoading(false);
+				} else {
+					setSmsSended(true);
+					setLoading(false);
+				}
+			});
 		}
 	};
 	
-	const renderEmail = () => (
+	const renderLogin = () => (
 		<View style={styles.block}>
-			<Text style={styles.label}>Введите свой e-mail</Text>
+			<Text style={styles.label}>Введите свой логин</Text>
 			<TextInput
 				style={styles.input}
-				onChangeText={changeFieldValue('email')}
+				onChangeText={changeFieldValue('login')}
 				underlineColorAndroid='transparent'
-				value={email}
-				autoCompleteType={'email'}
+				value={login}
+				autoCompleteType={'off'}
 				autoCapitalize={'none'}
-				keyboardType={'email-address'}
 			/>
-			{!emailIsValid && <Text style={styles.error}>Не верный формат e-mail</Text>}
-			{userNotExist && <Text style={styles.error}>Такой пользователь не зарегистрирован</Text>}
+			{!loginIsValid && <Text style={styles.error}>Полу логин не может быть пустым</Text>}
+			{userNotExist && <Text style={styles.error}>Такой пользователь не найден</Text>}
 		</View>
 	);
 	
@@ -214,8 +210,7 @@ const RecoveryAccount = (props) => {
 		<View style={styles.block}>
 			<Text style={styles.label}>Введите код</Text>
 			<Text style={styles.label}>
-				Введите код подтверждения из письма,
-				отправленного на адрес {email}</Text>
+				Введите код подтверждения из смс</Text>
 			<TextInput
 				style={styles.input}
 				onChangeText={changeFieldValue('code')}
@@ -270,7 +265,7 @@ const RecoveryAccount = (props) => {
 	return (
 		<ScreenContainer>
 			<View style={styles.page}>
-				{codeSended && !codeIsInCorrect ? renderPass() : emailSended ? renderCode() : renderEmail()}
+				{codeSended && !codeIsInCorrect ? renderPass() : smsSended ? renderCode() : renderLogin()}
 				<View style={styles.footer}>
 					<Button
 						loading={loading}
@@ -285,7 +280,7 @@ const RecoveryAccount = (props) => {
 
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
-			recoverAccountSendEmail,
+			recoverAccountSendSms,
 			recoverAccountSendCode,
 			recoverAccountSendPass,
 		},
