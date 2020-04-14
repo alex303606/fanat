@@ -65,21 +65,28 @@ export const registerNewUser = ({login, phone, email, password, confirmPassword}
 	};
 };
 
-export const loginUser = (data: {
-	login: string,
-	password: string,
-}) => {
-	console.log(data);
-	
+export const loginUser = (login, password) => {
+	const params = {
+		TYPE: 'auth',
+		LOGIN: login,
+		PASSWORD: password,
+	};
 	return dispatch => {
-		setTimeout(() => {
-			return dispatch(loginUserSuccess(data));
-		}, 2000);
+		return axios.post('', params).then(
+			response => {
+				if (response && response.data) {
+					if (response.data.result) {
+						dispatch(loginUserSuccess(response.data.message));
+					}
+					return response.data;
+				}
+			},
+		);
 	};
 };
 
-const loginUserSuccess = (data) => {
-	return {type: SIGN_IN_SUCCESS, data};
+const loginUserSuccess = (id) => {
+	return {type: SIGN_IN_SUCCESS, id};
 };
 
 export const signOut = () => {

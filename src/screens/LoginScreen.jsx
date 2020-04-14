@@ -110,12 +110,12 @@ const LoginScreen = (props) => {
 			return;
 		}
 		setLoading(true);
-		props.loginUser({login, password});
-		
-		//error request
-		// setTimeout(() => {
-		// 	setAuthError(true);
-		// }, 2000);
+		props.loginUser(login, password).then(data => {
+			if (!data.result) {
+				setAuthError(true);
+			}
+			setLoading(false);
+		});
 	};
 	const forgetPassHandler = () => props.navigation.navigate('Recovery');
 	const navigateToRegistration = () => props.navigation.navigate('Register');
