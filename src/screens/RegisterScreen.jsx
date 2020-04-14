@@ -10,7 +10,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import CustomModal from '../components/CustomModal';
 import LoremText from '../components/LoremText';
 import { bindActionCreators } from 'redux';
-import { registerNewUser } from '../store/actions/profile';
+import { confirmationCode, registerNewUser } from '../store/actions/profile';
 import { connect } from 'react-redux';
 
 const passReg = /^(?=.*\d)(?=.*[a-z]).{8,}/;
@@ -33,7 +33,6 @@ const styles = EStyleSheet.create({
 		flexDirection: 'column',
 	},
 	footer: {
-		flexGrow: 1,
 		justifyContent: 'flex-end',
 		paddingTop: '25rem',
 	},
@@ -97,10 +96,26 @@ const styles = EStyleSheet.create({
 		flex: 1,
 		flexGrow: 1,
 	},
+	codeInput: {
+		height: '42rem',
+		fontSize: '14rem',
+		color: 'white',
+		borderWidth: 1,
+		borderColor: 'white',
+		borderRadius: 5,
+		paddingHorizontal: '13rem',
+	},
 	label: {
 		fontSize: '14rem',
 		color: 'white',
 		flexWrap: 'wrap',
+	},
+	labelCode: {
+		fontSize: '14rem',
+		color: 'white',
+		textAlign: 'center',
+		marginBottom: '20rem',
+		fontWeight: '500',
 	},
 	inputContainer: {
 		flexDirection: 'column',
@@ -130,6 +145,11 @@ const styles = EStyleSheet.create({
 		textAlign: 'center',
 		marginBottom: 20,
 	},
+	block: {
+		flexDirection: 'column',
+		justifyContent: 'center',
+		flexGrow: 1,
+	},
 });
 
 const RegisterScreen = (props) => {
@@ -156,6 +176,11 @@ const RegisterScreen = (props) => {
 	const changePasswordSecure = () => setPasswordSecure(!passwordSecure);
 	const changeRePasswordSecure = () => setRePasswordSecure(!rePasswordSecure);
 	const changeModalVisibleHandler = () => changeModalVisible(!modalVisible);
+	const [codeIsValid, setCodeIsValid] = useState(false);
+	const [codeIsInCorrect, setCodeIsInCorrect] = useState(false);
+	const [smsSended, setSmsSended] = useState(false);
+	const [code, changeCode] = useState('');
+	
 	const acceptRules = () => {
 		setRules(true);
 		changeModalVisible(false);
@@ -170,6 +195,8 @@ const RegisterScreen = (props) => {
 				return setRePassword(value.replace(/ /g, ''));
 			case 'email':
 				return setEmail(value.replace(/ /g, ''));
+			case 'code':
+				return changeCode(value.replace(/[^0-9.]/g, ''));
 			default:
 				return;
 		}
@@ -202,6 +229,21 @@ const RegisterScreen = (props) => {
 	);
 	
 	const nextHandler = () => {
+		if (smsSended) {
+			setCodeIsValid(code.length < 4);
+			if (code.length > 3) {
+				setLoading(true);
+				props.confirmationCode(login, code).then(data => {
+					if (!data.result) {
+						setCodeIsInCorrect(true);
+						setLoading(false);
+					} else {
+						props.navigation.navigate('Login');
+					}
+				});
+			}
+			return;
+		}
 		setPasswordsIsMatch(password === rePassword);
 		setLoginIsValid(!!login);
 		setPassIsValid(passReg.test(password));
@@ -234,130 +276,155 @@ const RegisterScreen = (props) => {
 					setLoading(false);
 				}
 			} else {
-				props.navigation.navigate('Login');
+				setSmsSended(true);
+				setLoading(false);
 			}
 		});
 	};
 	
+	const renderCode = () => (
+		<View style={styles.block}>
+			<Text style={styles.labelCode}>Введите код</Text>
+			<Text style={styles.labelCode}>
+				Введите код подтверждения из смс</Text>
+			<TextInput
+				style={styles.codeInput}
+				onChangeText={changeFieldValue('code')}
+				underlineColorAndroid='transparent'
+				value={code}
+				autoCapitalize={'none'}
+				keyboardType={'numeric'}
+			/>
+			{codeIsInCorrect && <Text style={styles.error}>Не верный код</Text>}
+			{codeIsValid && <Text style={styles.error}>Код должен содержать 4 цифры</Text>}
+		</View>
+	);
+	
+	const renderForm = () => (
+		<View style={{flexGrow: 1}}>
+			<PickerImage
+				avatar={avatar}
+				savePhoto={setAvatar}
+			/>
+			<View style={styles.inputsContainer}>
+				<View style={styles.inputContainer}>
+					<View style={styles.row}>
+						<Text style={styles.label}>Логин:</Text>
+						<TextInput
+							autoFocus={true}
+							numberOfLines={1}
+							style={styles.input}
+							value={login}
+							autoCompleteType={'off'}
+							onChangeText={changeFieldValue('login')}
+							underlineColorAndroid='transparent'
+							autoCapitalize={'none'}
+						/>
+					</View>
+					{!loginIsValid && <Text style={styles.error}>Заполните поле логин</Text>}
+					{userAlreadyExist && <Text style={styles.error}>Такой логин уже есть</Text>}
+				</View>
+				
+				<View style={{flexDirection: 'column'}}>
+					<View style={styles.row}>
+						<Text style={styles.label}>Пароль:</Text>
+						<View style={styles.rowPass}>
+							<TextInput
+								style={styles.inputPass}
+								value={password}
+								autoCompleteType={'off'}
+								onChangeText={changeFieldValue('password')}
+								underlineColorAndroid='transparent'
+								secureTextEntry={passwordSecure}
+								autoCapitalize={'none'}
+							/>
+							{renderChangePasswordSecureButton()}
+						</View>
+					</View>
+					{!passIsValid &&
+					<Text style={styles.error}>
+						Пароль должен содержать как минимум одну цифру и строчную букву и быть не менее 8 символов.
+					</Text>}
+				</View>
+				
+				<View style={styles.inputContainer}>
+					<View style={styles.row}>
+						<Text style={styles.label}>Подтверждение:</Text>
+						<View style={styles.rowPass}>
+							<TextInput
+								style={styles.inputPass}
+								value={rePassword}
+								autoCompleteType={'off'}
+								onChangeText={changeFieldValue('rePassword')}
+								underlineColorAndroid='transparent'
+								secureTextEntry={rePasswordSecure}
+								autoCapitalize={'none'}
+							/>
+							{renderChangeRePasswordSecureButton()}
+						</View>
+					</View>
+					{!passwordsIsMatch && <Text style={styles.error}>Пароли не совпадают</Text>}
+				</View>
+				<View style={styles.inputContainer}>
+					<View style={styles.row}>
+						<Text style={styles.label}>Номер телефона:</Text>
+						<TextInputMask
+							keyboardType='phone-pad'
+							underlineColorAndroid='transparent'
+							autoCorrect={false}
+							type={'custom'}
+							options={{mask: '0 999 99-99-99'}}
+							onChangeText={setPhone}
+							value={phone}
+							style={styles.input}
+							autoCompleteType={'tel'}
+						/>
+					</View>
+					{!phoneIsValid && <Text style={styles.error}>Не верный формат телефона</Text>}
+				</View>
+				<View style={styles.inputContainer}>
+					<View style={styles.row}>
+						<Text style={styles.label}>Ваш e-mail:</Text>
+						<TextInput
+							style={styles.input}
+							value={email}
+							autoCompleteType={'email'}
+							autoCapitalize={'none'}
+							keyboardType={'email-address'}
+							onChangeText={changeFieldValue('email')}
+							underlineColorAndroid='transparent'
+						/>
+					</View>
+					{!emailIsValid && <Text style={styles.error}>Не верный формат e-mail</Text>}
+					{emailAlreadyExist && <Text style={styles.error}>Такая почта уже зарегистрирована</Text>}
+				</View>
+			</View>
+			<View style={[styles.inputContainer, {paddingVertical: styles.$25}]}>
+				<View style={styles.checkBoxRow}>
+					<TouchableOpacity
+						onPress={changeRules}
+						activeOpacity={0.7}
+						style={[styles.checkBox, {backgroundColor: rules ? '#D51E49' : 'transparent'}]}
+					/>
+					<Text style={styles.checkBoxLabel}>С правилами ознакомлен</Text>
+				</View>
+				{!familiar && <Text style={styles.error}>Ознакомьтесь с правилами</Text>}
+			</View>
+			<View style={styles.rules}>
+				<Text onPress={changeModalVisibleHandler} style={styles.rulesText}>Правила</Text>
+			</View>
+		</View>
+	);
+	
 	return (
 		<ScreenContainer>
 			<View style={styles.page}>
-				<PickerImage
-					avatar={avatar}
-					savePhoto={setAvatar}
-				/>
-				<View style={styles.inputsContainer}>
-					<View style={styles.inputContainer}>
-						<View style={styles.row}>
-							<Text style={styles.label}>Логин:</Text>
-							<TextInput
-								autoFocus={true}
-								numberOfLines={1}
-								style={styles.input}
-								value={login}
-								autoCompleteType={'off'}
-								onChangeText={changeFieldValue('login')}
-								underlineColorAndroid='transparent'
-								autoCapitalize={'none'}
-							/>
-						</View>
-						{!loginIsValid && <Text style={styles.error}>Заполните поле логин</Text>}
-						{userAlreadyExist && <Text style={styles.error}>Такой логин уже есть</Text>}
-					</View>
-					
-					<View style={{flexDirection: 'column'}}>
-						<View style={styles.row}>
-							<Text style={styles.label}>Пароль:</Text>
-							<View style={styles.rowPass}>
-								<TextInput
-									style={styles.inputPass}
-									value={password}
-									autoCompleteType={'off'}
-									onChangeText={changeFieldValue('password')}
-									underlineColorAndroid='transparent'
-									secureTextEntry={passwordSecure}
-									autoCapitalize={'none'}
-								/>
-								{renderChangePasswordSecureButton()}
-							</View>
-						</View>
-						{!passIsValid &&
-						<Text style={styles.error}>
-							Пароль должен содержать как минимум одну цифру и строчную букву и быть не менее 8 символов.
-						</Text>}
-					</View>
-					
-					<View style={styles.inputContainer}>
-						<View style={styles.row}>
-							<Text style={styles.label}>Подтверждение:</Text>
-							<View style={styles.rowPass}>
-								<TextInput
-									style={styles.inputPass}
-									value={rePassword}
-									autoCompleteType={'off'}
-									onChangeText={changeFieldValue('rePassword')}
-									underlineColorAndroid='transparent'
-									secureTextEntry={rePasswordSecure}
-									autoCapitalize={'none'}
-								/>
-								{renderChangeRePasswordSecureButton()}
-							</View>
-						</View>
-						{!passwordsIsMatch && <Text style={styles.error}>Пароли не совпадают</Text>}
-					</View>
-					<View style={styles.inputContainer}>
-						<View style={styles.row}>
-							<Text style={styles.label}>Номер телефона:</Text>
-							<TextInputMask
-								keyboardType='phone-pad'
-								underlineColorAndroid='transparent'
-								autoCorrect={false}
-								type={'custom'}
-								options={{mask: '0 999 99-99-99'}}
-								onChangeText={setPhone}
-								value={phone}
-								style={styles.input}
-								autoCompleteType={'tel'}
-							/>
-						</View>
-						{!phoneIsValid && <Text style={styles.error}>Не верный формат телефона</Text>}
-					</View>
-					<View style={styles.inputContainer}>
-						<View style={styles.row}>
-							<Text style={styles.label}>Ваш e-mail:</Text>
-							<TextInput
-								style={styles.input}
-								value={email}
-								autoCompleteType={'email'}
-								autoCapitalize={'none'}
-								keyboardType={'email-address'}
-								onChangeText={changeFieldValue('email')}
-								underlineColorAndroid='transparent'
-							/>
-						</View>
-						{!emailIsValid && <Text style={styles.error}>Не верный формат e-mail</Text>}
-						{emailAlreadyExist && <Text style={styles.error}>Такая почта уже зарегистрирована</Text>}
-					</View>
-				</View>
-				<View style={[styles.inputContainer, {paddingVertical: styles.$25}]}>
-					<View style={styles.checkBoxRow}>
-						<TouchableOpacity
-							onPress={changeRules}
-							activeOpacity={0.7}
-							style={[styles.checkBox, {backgroundColor: rules ? '#D51E49' : 'transparent'}]}
-						/>
-						<Text style={styles.checkBoxLabel}>С правилами ознакомлен</Text>
-					</View>
-					{!familiar && <Text style={styles.error}>Ознакомьтесь с правилами</Text>}
-				</View>
-				<View style={styles.rules}>
-					<Text onPress={changeModalVisibleHandler} style={styles.rulesText}>Правила</Text>
-				</View>
+				{smsSended ? renderCode() : renderForm()}
 				<View style={styles.footer}>
 					<Button
 						loading={loading}
 						onPress={nextHandler}
-						title={'Зарегистрироваться'}
+						title={'Далее'}
 					/>
 				</View>
 			</View>
@@ -381,6 +448,7 @@ const RegisterScreen = (props) => {
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
 			registerNewUser,
+			confirmationCode,
 		},
 		dispatch);
 };
