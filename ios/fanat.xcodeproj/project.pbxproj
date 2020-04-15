@@ -20,6 +20,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* fanatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* fanatTests.m */; };
 		6B9FE130D0A93E0355C0D9DA /* libPods-fanat-fanatTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C01186D6FA534C1A3347859 /* libPods-fanat-fanatTests.a */; };
 		B0EF9E1B8C6B521E7C4720D2 /* libPods-fanat-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EF591668B83FF74C72C959 /* libPods-fanat-tvOSTests.a */; };
+		26B145B22C224763B4D95E43 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04065D9A8FE44D0E9410D407 /* icomoon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		E5BEAA5A6092E86D38806359 /* Pods-fanat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fanat.release.xcconfig"; path = "Target Support Files/Pods-fanat/Pods-fanat.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		04065D9A8FE44D0E9410D407 /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +167,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				F64DE108B4A9B0E96E040FD9 /* Pods */,
+				FDF1E30C2E4A4BB083E0358D /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -196,6 +199,15 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		FDF1E30C2E4A4BB083E0358D /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				04065D9A8FE44D0E9410D407 /* icomoon.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -341,6 +353,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				26B145B22C224763B4D95E43 /* icomoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

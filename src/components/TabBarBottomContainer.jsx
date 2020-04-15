@@ -47,12 +47,9 @@ const TabBarBottomContainer = ({state, descriptors, navigation}) => {
 						style={{flex: 1}}
 					>
 						<CustomIcon
-							color={'blue'}
+							color={isFocused ? 'white' : 'red'}
 							name={route.name}
 							size={30}/>
-						<Text style={{color: isFocused ? 'white' : 'red'}}>
-							{label}
-						</Text>
 					</TouchableOpacity>
 				);
 			})}
