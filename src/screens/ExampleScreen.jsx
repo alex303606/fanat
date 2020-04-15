@@ -21,9 +21,9 @@ const ExampleScreen = (props) => {
 			}}>ExampleScreen</Text>
 			<Button
 				onPress={() => {
-					navigation.navigate('Second');
+					navigation.navigate('Scanner');
 				}}
-				title={'go to Second'}
+				title={'Scan code'}
 			/>
 			<Button
 				onPress={() => {

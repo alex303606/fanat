@@ -22,9 +22,9 @@ const TournamentsNavigator = () => {
 				}}
 				component={ExampleScreen}/>
 			<Stack.Screen
-				name="Second"
+				name="Scanner"
 				options={{
-					title: 'Second',
+					title: 'QR код',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 				}}
 				component={SecondScreen}/>
