@@ -4,33 +4,29 @@ import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/
 import Header from '../components/Header';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Dimensions } from 'react-native';
-import TournamentsScreen from '../screens/TournamentsScreen';
 const entireScreenWidth = Dimensions.get('window').width;
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import StatisticsNavigator from './StatisticsNavigator';
+import ProfileNavigator from './ProfileNavigator';
+import NewsNavigator from './NewsNavigator';
+import TournamentsNavigator from './TournamentsNavigator';
+import TabBarBottomContainer from '../components/TabBarBottomContainer';
 
+const Tab = createBottomTabNavigator();
 EStyleSheet.build({$rem: entireScreenWidth / 320});
-
-const Stack = createStackNavigator();
 
 const AppNavigator = () => {
 	return (
 		<NavigationContainer>
-			<Stack.Navigator
-				initialRouteName='Tournaments'
-				headerMode="float"
-				screenOptions={{
-					...Header,
-				}}
+			<Tab.Navigator
+				initialRouteName="Tournaments"
+				tabBar={props => <TabBarBottomContainer {...props} />}
 			>
-				<Stack.Screen
-					name="Tournaments"
-					options={{
-						title: 'Турниры',
-						cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-					}}
-					component={TournamentsScreen}
-				/>
-				
-			</Stack.Navigator>
+				<Tab.Screen name="Tournaments" component={TournamentsNavigator} />
+				<Tab.Screen name="News" component={NewsNavigator} />
+				<Tab.Screen name="Statistics" component={StatisticsNavigator} />
+				<Tab.Screen name="Profile" component={ProfileNavigator} />
+			</Tab.Navigator>
 		</NavigationContainer>
 	);
 };
