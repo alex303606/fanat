@@ -7,7 +7,6 @@ import AppNavigator from './AppNavigator';
 
 const AppNavigationState = (props) => {
 	const insets = useSafeArea();
-	
 	return (
 		<View style={{flex: 1, backgroundColor: '#19112C', paddingBottom: insets.bottom}}>
 			<StatusBar translucent barStyle="light-content" backgroundColor="#19112C"/>

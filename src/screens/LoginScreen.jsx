@@ -89,7 +89,7 @@ const styles = EStyleSheet.create({
 		fontSize: '14rem',
 		lineHeight: '16rem',
 		marginTop: '10rem',
-		fontWeight: 'bold'
+		fontWeight: 'bold',
 	},
 	$30: '30rem',
 });
@@ -113,8 +113,8 @@ const LoginScreen = (props) => {
 		props.loginUser(login, password).then(data => {
 			if (!data.result) {
 				setAuthError(true);
+				setLoading(false);
 			}
-			setLoading(false);
 		});
 	};
 	const forgetPassHandler = () => props.navigation.navigate('Recovery');
@@ -197,6 +197,7 @@ const LoginScreen = (props) => {
 		</ScreenContainer>
 	);
 };
+
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
 			loginUser,

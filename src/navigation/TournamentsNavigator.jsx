@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import ExampleScreen from '../screens/ExampleScreen';
 import Header from '../components/Header';
+import SecondScreen from '../screens/SecondScreen';
 
 const Stack = createStackNavigator();
 
@@ -14,26 +15,19 @@ const TournamentsNavigator = () => {
 			}}
 		>
 			<Stack.Screen
-				name="Home"
+				name="First"
 				options={{
 					title: 'Турниры',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 				}}
 				component={ExampleScreen}/>
 			<Stack.Screen
-				name="Profile"
+				name="Second"
 				options={{
-					title: 'Турниры',
+					title: 'Second',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 				}}
-				component={ExampleScreen}/>
-			<Stack.Screen
-				name="Settings"
-				options={{
-					title: 'Турниры',
-					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-				}}
-				component={ExampleScreen}/>
+				component={SecondScreen}/>
 		</Stack.Navigator>
 	);
 };
