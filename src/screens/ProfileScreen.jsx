@@ -3,28 +3,20 @@ import { Text } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenWrapper from './ScreenWrapper';
 import Button from '../components/Button';
-import { useNavigation } from '@react-navigation/native';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../store/actions/profile';
 import { connect } from 'react-redux';
 
 const styles = EStyleSheet.create({});
 
-const ExampleScreen = (props) => {
-	const navigation = useNavigation();
+const ProfileScreen = (props) => {
 	return (
 		<ScreenWrapper>
 			<Text style={{
 				color: 'white',
 				fontSize: 30,
 				fontWeight: 'bold',
-			}}>ExampleScreen</Text>
-			<Button
-				onPress={() => {
-					navigation.navigate('Scanner');
-				}}
-				title={'Scan code'}
-			/>
+			}}>Profile</Text>
 			<Button
 				onPress={() => {
 					props.signOut();
@@ -42,4 +34,4 @@ const mapDispatchToProps = dispatch => {
 		dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(ExampleScreen);
+export default connect(null, mapDispatchToProps)(ProfileScreen);

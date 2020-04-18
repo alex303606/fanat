@@ -20,8 +20,7 @@ const styles = EStyleSheet.create({
 	},
 });
 
-const SecondScreen = () => {
-	const navigation = useNavigation();
+const ScannerScreen = () => {
 	const [code, setCode] = useState('');
 	const onSuccess = e => {
 		setCode(e.data);
@@ -64,4 +63,4 @@ const SecondScreen = () => {
 	);
 };
 
-export default SecondScreen;
+export default ScannerScreen;

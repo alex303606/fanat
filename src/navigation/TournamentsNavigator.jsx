@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import ExampleScreen from '../screens/ExampleScreen';
+import TournamentsScreen from '../screens/TournamentsScreen';
 import Header from '../components/Header';
-import SecondScreen from '../screens/SecondScreen';
+import ScannerScreen from '../screens/ScannerScreen';
 
 const Stack = createStackNavigator();
 
@@ -20,14 +20,14 @@ const TournamentsNavigator = () => {
 					title: 'Турниры',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 				}}
-				component={ExampleScreen}/>
+				component={TournamentsScreen}/>
 			<Stack.Screen
 				name="Scanner"
 				options={{
 					title: 'QR код',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 				}}
-				component={SecondScreen}/>
+				component={ScannerScreen}/>
 		</Stack.Navigator>
 	);
 };

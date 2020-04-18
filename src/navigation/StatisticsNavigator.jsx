@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import ExampleScreen from '../screens/ExampleScreen';
+import StatisticsScreen from '../screens/StatisticsScreen';
 import Header from '../components/Header';
 
 const Stack = createStackNavigator();
@@ -19,7 +19,7 @@ const StatisticsNavigator = () => {
 					title: 'Статистика',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 				}}
-				component={ExampleScreen}/>
+				component={StatisticsScreen}/>
 		</Stack.Navigator>
 	);
 };
