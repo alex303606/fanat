@@ -1,7 +1,7 @@
 import { SIGN_IN_SUCCESS, SIGN_OUT } from './actionTypes';
 import axios from 'axios';
 
-export const recoverAccountSendSms = login => {
+export const recoverAccountSendEmail = login => {
 	const params = {
 		TYPE: 'remember_password',
 		LOGIN: login,
@@ -34,15 +34,23 @@ export const confirmationCode = (login, code) => {
 	};
 };
 
-export const recoverAccountSendCode = code => {
-	console.log(code);
-};
-
-export const recoverAccountSendPass = (data: {
-	password: string,
-	confirmPassword: string
-}) => {
-	console.log(data);
+export const recoverAccountSendPass = ({login, code, password, confirmPassword}) => {
+	const params = {
+		TYPE: 'change_password',
+		LOGIN: login,
+		CHECKWORD: code,
+		PASSWORD: password,
+		CONFIRM_PASSWORD: confirmPassword,
+	};
+	return dispatch => {
+		return axios.post('', params).then(
+			response => {
+				if (response && response.data) {
+					return response.data;
+				}
+			},
+		);
+	};
 };
 
 export const registerNewUser = ({login, phone, email, password, confirmPassword}) => {

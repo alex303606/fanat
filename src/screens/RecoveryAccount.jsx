@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Button from '../components/Button';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { recoverAccountSendCode, recoverAccountSendSms, recoverAccountSendPass } from '../store/actions/profile';
+import { recoverAccountSendEmail, recoverAccountSendPass } from '../store/actions/profile';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 const passReg = /^(?=.*\d)(?=.*[a-z]).{8,}/;
@@ -88,13 +88,12 @@ const RecoveryAccount = (props) => {
 	const [passwordSecure, setPasswordSecure] = useState(true);
 	const [rePasswordSecure, setRePasswordSecure] = useState(true);
 	const [loginIsValid, setLoginIsValid] = useState(true);
-	const [codeIsValid, setCodeIsValid] = useState(false);
+	const [codeIsValid, setCodeIsValid] = useState(true);
 	const [codeIsInCorrect, setCodeIsInCorrect] = useState(false);
 	const [userNotExist, seUserNotExist] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [passwordsIsMatch, setPasswordsIsMatch] = useState(true);
-	const [smsSended, setSmsSended] = useState(false);
-	const [codeSended, setCodeSended] = useState(false);
+	const [emailSended, setEmailSended] = useState(false);
 	const [passIsValid, setPassIsValid] = useState(true);
 	const changePasswordSecure = () => setPasswordSecure(!passwordSecure);
 	const changeRePasswordSecure = () => setRePasswordSecure(!rePasswordSecure);
@@ -108,7 +107,7 @@ const RecoveryAccount = (props) => {
 			case 'login':
 				return changeLogin(value.replace(/ /g, ''));
 			case 'code':
-				return changeCode(value.replace(/[^0-9.]/g, ''));
+				return changeCode(value.replace(/ /g, ''));
 			default:
 				return;
 		}
@@ -141,49 +140,37 @@ const RecoveryAccount = (props) => {
 	);
 	
 	const sendHandler = () => {
-		if (codeSended) {
+		if (emailSended) {
 			setPasswordsIsMatch(password === rePassword);
 			setPassIsValid(passReg.test(password));
-			if (passReg.test(password) && password === rePassword) {
+			setCodeIsValid(!!code.length);
+			if (code && !!code.length && passReg.test(password) && password === rePassword) {
 				setLoading(true);
 				props.recoverAccountSendPass({
+					login,
+					code,
 					password,
-					confirmPassword: rePassword
+					confirmPassword: rePassword,
+				}).then(data => {
+					if (!data.result) {
+						setCodeIsInCorrect(true);
+						setLoading(false);
+					} else {
+						props.navigation.navigate('Login');
+					}
 				});
-				setTimeout(() => {
-					props.navigation.navigate('Login');
-				}, 2000);
-			}
-			return;
-		}
-		if (smsSended) {
-			setCodeIsValid(code.length < 4);
-			if (code.length > 3) {
-				setLoading(true);
-				props.recoverAccountSendCode(code);
-				
-				setTimeout(() => {
-					setCodeSended(true);
-					setLoading(false);
-				}, 2000);
-				
-				// request is error
-				// setTimeout(() => {
-				// 	setCodeIsInCorrect(true);
-				// 	setLoading(false);
-				// }, 2000);
 			}
 			return;
 		}
 		setLoginIsValid(!!login);
 		if (!!login) {
 			setLoading(true);
-			props.recoverAccountSendSms(login).then(data => {
+			props.recoverAccountSendEmail(login).then(data => {
 				if (!data.result) {
 					seUserNotExist(true);
 					setLoading(false);
 				} else {
-					setSmsSended(true);
+					setEmailSended(true);
 					setLoading(false);
 				}
 			});
@@ -206,28 +193,24 @@ const RecoveryAccount = (props) => {
 		</View>
 	);
 	
-	const renderCode = () => (
-		<View style={styles.block}>
-			<Text style={styles.label}>Введите код</Text>
-			<Text style={styles.label}>
-				Введите код подтверждения из смс</Text>
-			<TextInput
-				style={styles.input}
-				onChangeText={changeFieldValue('code')}
-				underlineColorAndroid='transparent'
-				value={code}
-				autoCapitalize={'none'}
-				keyboardType={'numeric'}
-			/>
-			{codeIsInCorrect && <Text style={styles.error}>Не верный код</Text>}
-			{codeIsValid && <Text style={styles.error}>Код должен содержать 4 цифры</Text>}
-		</View>
-	);
-	
 	const renderPass = () => (
 		<View style={styles.block}>
-			<Text style={styles.label}>Придумайте новый пароль</Text>
 			<View style={styles.inputContainer}>
+				<Text style={styles.label}>Введите код</Text>
+				<Text style={styles.label}>Введите код подтверждения из письма</Text>
+				<TextInput
+					style={styles.input}
+					onChangeText={changeFieldValue('code')}
+					underlineColorAndroid='transparent'
+					value={code}
+					autoCapitalize={'none'}
+					keyboardType={'numeric'}
+				/>
+				{codeIsInCorrect && <Text style={styles.error}>Не верный код</Text>}
+				{!codeIsValid && <Text style={styles.error}>Введите код подтверждения из письма</Text>}
+			</View>
+			<View style={styles.inputContainer}>
+				<Text style={styles.label}>Придумайте новый пароль</Text>
 				<View style={styles.rowPass}>
 					<TextInput
 						style={styles.inputPass}
@@ -242,7 +225,8 @@ const RecoveryAccount = (props) => {
 				{!passIsValid &&
 				<Text style={styles.error}>
 					Пароль должен содержать как минимум одну цифру и строчную букву и быть не менее 8 символов.
-				</Text>}
+				</Text>
+				}
 			</View>
 			
 			<View style={styles.inputContainer}>
@@ -265,7 +249,7 @@ const RecoveryAccount = (props) => {
 	return (
 		<ScreenContainer>
 			<View style={styles.page}>
-				{codeSended && !codeIsInCorrect ? renderPass() : smsSended ? renderCode() : renderLogin()}
+				{emailSended ? renderPass() : renderLogin()}
 				<View style={styles.footer}>
 					<Button
 						loading={loading}
@@ -280,9 +264,8 @@ const RecoveryAccount = (props) => {
 
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
-			recoverAccountSendSms,
-			recoverAccountSendCode,
 			recoverAccountSendPass,
+			recoverAccountSendEmail,
 		},
 		dispatch);
 };
