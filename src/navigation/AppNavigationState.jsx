@@ -7,10 +7,18 @@ import AppNavigator from './AppNavigator';
 
 const AppNavigationState = (props) => {
 	const insets = useSafeArea();
+	if (props.profile && props.profile.userIsLoggedIn) {
+		return (
+			<View style={{flex: 1, backgroundColor: 'white', paddingBottom: insets.bottom}}>
+				<StatusBar translucent barStyle="light-content" backgroundColor="#19112C"/>
+				<AppNavigator/>
+			</View>
+		);
+	}
 	return (
 		<View style={{flex: 1, backgroundColor: '#19112C', paddingBottom: insets.bottom}}>
 			<StatusBar translucent barStyle="light-content" backgroundColor="#19112C"/>
-			{props.profile && props.profile.userIsLoggedIn ? <AppNavigator/> : <AuthNavigator/>}
+			<AuthNavigator/>
 		</View>
 	);
 };

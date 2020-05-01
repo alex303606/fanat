@@ -140,10 +140,10 @@ const styles = EStyleSheet.create({
 	$30: '30rem',
 	modalTitle: {
 		color: 'white',
-		fontSize: 30,
+		fontSize: '20rem',
 		fontWeight: 'bold',
 		textAlign: 'center',
-		marginBottom: 20,
+		marginBottom: '20rem',
 	},
 	block: {
 		flexDirection: 'column',

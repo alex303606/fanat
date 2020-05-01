@@ -7,7 +7,6 @@ const styles = EStyleSheet.create({
 	tabBar: {
 		flexDirection: 'row',
 		backgroundColor: 'white',
-		marginHorizontal: '5rem',
 		borderTopRightRadius: '15rem',
 		borderTopLeftRadius: '15rem',
 	},
@@ -63,8 +62,10 @@ const TabBarBottomContainer = ({state, descriptors, navigation}) => {
 	};
 	
 	return (
-		<View style={styles.tabBar}>
-			{state.routes.map(renderItem)}
+		<View style={{backgroundColor: '#19112C'}}>
+			<View style={styles.tabBar}>
+				{state.routes.map(renderItem)}
+			</View>
 		</View>
 	);
 };

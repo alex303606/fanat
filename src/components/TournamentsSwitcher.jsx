@@ -1,20 +1,63 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import CustomIcon from './CustomIcon';
 
-const styles = EStyleSheet.create({});
+const styles = EStyleSheet.create({
+	text: {
+		fontSize: '12rem',
+		color: 'white',
+		textTransform: 'uppercase',
+		fontWeight: 'bold',
+		paddingHorizontal: '5rem',
+		flex: 1,
+		textAlign: 'center',
+	},
+	switch: {
+		flexDirection: 'row',
+		borderWidth: 1,
+		borderColor: '#D51E49',
+		borderRadius: 5,
+	},
+	item: {
+		width: '50%',
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingHorizontal: '10rem',
+		paddingVertical: '5rem',
+		justifyContent: 'space-between',
+		backgroundColor: 'transparent',
+		flexWrap: 'nowrap',
+	},
+	active: {
+		backgroundColor: '#D51E49',
+	},
+	$iconSize: '20rem',
+});
 
-const TournamentsSwitcher = () => {
+const TournamentsSwitcher = (props) => {
 	return (
-		<View style={{
-			flexDirection: 'row',
-		}}>
-			<View>
-				<Text>Одиночные турниры</Text>
-			</View>
-			<View>
-				<Text>Командные турниры</Text>
-			</View>
+		<View style={styles.switch}>
+			<TouchableOpacity
+				activeOpacity={0.7}
+				onPress={() => props.changeValue('single')}
+				style={[styles.item, props.selected === 'single' && styles.active]}>
+				<CustomIcon
+					color={'white'}
+					name={'single'}
+					size={styles.$iconSize}/>
+				<Text numberOfLines={1} style={styles.text}>Одиночные</Text>
+			</TouchableOpacity>
+			<TouchableOpacity
+				activeOpacity={0.7}
+				onPress={() => props.changeValue('multi')}
+				style={[styles.item, props.selected === 'multi' && styles.active]}>
+				<Text numberOfLines={1} style={styles.text}>Командные</Text>
+				<CustomIcon
+					color={'white'}
+					name={'multi'}
+					size={styles.$iconSize}/>
+			</TouchableOpacity>
 		</View>
 	);
 };

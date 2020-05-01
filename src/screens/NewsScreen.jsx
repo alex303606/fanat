@@ -55,7 +55,7 @@ const newNews = [
 const styles = EStyleSheet.create({
 	page: {
 		flex: 1,
-		paddingHorizontal: '20rem',
+		paddingHorizontal: '10rem',
 		flexDirection: 'column',
 	},
 	item: {

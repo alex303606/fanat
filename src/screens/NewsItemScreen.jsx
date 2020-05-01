@@ -15,7 +15,7 @@ const item = {
 const styles = EStyleSheet.create({
 	page: {
 		flex: 1,
-		paddingHorizontal: '20rem',
+		paddingHorizontal: '10rem',
 		flexDirection: 'column',
 		paddingVertical: '10rem',
 	},
