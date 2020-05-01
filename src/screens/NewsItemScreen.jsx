@@ -17,7 +17,7 @@ const styles = EStyleSheet.create({
 		flex: 1,
 		paddingHorizontal: '20rem',
 		flexDirection: 'column',
-		paddingBottom: '20rem',
+		paddingVertical: '10rem',
 	},
 	title: {
 		fontSize: '18rem',
