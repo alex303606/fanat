@@ -25,7 +25,7 @@ const Button = (props) => {
 			activeOpacity={0.7}
 			style={[styles.button, {
 				backgroundColor: props.disabled ? 'rgba(213, 30, 73, 0.5)' : '#D51E49',
-			}]}
+			}, props.style]}
 			onPress={pressHandler}>
 			{props.loading ?
 				<ActivityIndicator size="large" color={'white'}/> :
@@ -40,6 +40,10 @@ Button.propTypes = {
 	title: PropTypes.string.isRequired,
 	disabled: PropTypes.bool,
 	loading: PropTypes.bool,
+	style: PropTypes.oneOfType([
+		PropTypes.object,
+		PropTypes.array,
+	]),
 };
 
 export default Button;

@@ -1,5 +1,7 @@
 import { SIGN_IN_SUCCESS, SIGN_OUT } from './actionTypes';
 import axios from 'axios';
+import config from '../../../config';
+import RNFetchBlob from 'rn-fetch-blob';
 
 export const recoverAccountSendEmail = login => {
 	const params = {
@@ -53,23 +55,28 @@ export const recoverAccountSendPass = ({login, code, password, confirmPassword})
 	};
 };
 
-export const registerNewUser = ({login, phone, email, password, confirmPassword}) => {
-	const params = {
-		TYPE: 'register',
-		LOGIN: login,
-		PHONE: `${phone.replace('0', '996').replace(/[^0-9]/ig, '')}`,
-		EMAIL: email,
-		PASSWORD: password,
-		CONFIRM_PASSWORD: confirmPassword,
-	};
+export const registerNewUser = (data) => {
+	const params = [
+		{name: 'login', data: data.login},
+		{name: 'phone', data: data.phone},
+		{name: 'email', data: data.email},
+		{name: 'password', data: data.password},
+		{name: 'confirmPassword', data: data.confirmPassword},
+		{name: 'API_KEY', data: config.apiKey},
+	];
+	if (data.photo && !!data.photo.uri) {
+		params.push({name: 'image', filename: 'image.jpg', data: RNFetchBlob.wrap(data.photo.uri)});
+	}
 	return dispatch => {
-		return axios.post('', params).then(
-			response => {
-				if (response && response.data) {
-					return response.data;
-				}
-			},
-		);
+		return RNFetchBlob.config({
+			trusty: true,
+		}).fetch('POST', config.baseURL, {
+			'Content-Type': 'multipart/form-data',
+		}, params).then((resp) => {
+			if (resp.data) {
+				return JSON.parse(resp.data);
+			}
+		});
 	};
 };
 
@@ -83,8 +90,8 @@ export const loginUser = (login, password) => {
 		return axios.post('', params).then(
 			response => {
 				if (response && response.data) {
-					if (response.data.result) {
-						dispatch(loginUserSuccess(response.data.message));
+					if (response.data.result && !!response.data.data) {
+						dispatch(loginUserSuccess(response.data.data));
 					}
 					return response.data;
 				}

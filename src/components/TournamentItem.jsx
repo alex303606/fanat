@@ -54,11 +54,12 @@ const styles = EStyleSheet.create({
 });
 
 const TournamentItem = ({item}) => {
-	const {type, players, maxPlayers, address, price, date} = item;
+	const {COUNT_REGISTER_PLAYERS, COUNT_PLAYERS, address, PRICE, START_DATE} = item;
 	const navigation = useNavigation();
 	const navigateToTournamentScreen = () => {
 		navigation.navigate('Tournament', {item});
 	};
+	const price = !!PRICE ? `${PRICE.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} сом` : '';
 	return (
 		<TouchableOpacity
 			style={styles.item}
@@ -69,13 +70,13 @@ const TournamentItem = ({item}) => {
 				imageStyle={{
 					resizeMode: 'cover',
 				}}
-				source={type && images[type] ? images[type] : defaultImage}
+				source={images['fifa'] ? images['fifa'] : defaultImage}
 				style={styles.backGround}>
 				<View style={styles.right}>
 					<View style={styles.row}>
 						<Text numberOfLines={1}
 							  style={styles.freeSpaces}>
-							{players} / {maxPlayers}
+							{COUNT_REGISTER_PLAYERS} / {COUNT_PLAYERS}
 						</Text>
 					</View>
 					<View style={styles.row}>
@@ -92,8 +93,9 @@ const TournamentItem = ({item}) => {
 							color={'white'}
 							name={'cup'}
 							size={styles.$iconSize}/>
-						<Text numberOfLines={1}
-							  style={styles.rowText}>{price.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} сом</Text>
+						<Text numberOfLines={1} style={styles.rowText}>
+							{price}
+						</Text>
 					</View>
 					<View style={styles.row}>
 						<CustomIcon
@@ -101,7 +103,7 @@ const TournamentItem = ({item}) => {
 							color={'white'}
 							name={'players'}
 							size={styles.$iconSize}/>
-						<Text numberOfLines={1} style={styles.rowText}>{maxPlayers}</Text>
+						<Text numberOfLines={1} style={styles.rowText}>{COUNT_PLAYERS}</Text>
 					</View>
 					<View style={styles.row}>
 						<CustomIcon
@@ -109,7 +111,7 @@ const TournamentItem = ({item}) => {
 							color={'white'}
 							name={'date'}
 							size={styles.$iconSize}/>
-						<Text numberOfLines={1} style={styles.rowText}>{date}</Text>
+						<Text numberOfLines={1} style={styles.rowText}>{START_DATE}</Text>
 					</View>
 				</View>
 			</ImageBackground>

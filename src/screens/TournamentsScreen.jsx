@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenWrapper from './ScreenWrapper';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import TournamentsSwitcher from '../components/TournamentsSwitcher';
 import SingleTournaments from '../components/SingleTournaments';
 import MultiTournaments from '../components/MultiTournaments';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { getTournaments } from '../store/actions/tournaments';
+import TournamentItem from '../components/TournamentItem';
 
 const styles = EStyleSheet.create({
 	page: {
@@ -36,8 +38,44 @@ const styles = EStyleSheet.create({
 	},
 });
 
-const TournamentsScreen = () => {
+const TournamentsScreen = (props) => {
 	const [selectedValue, setSelectedValue] = useState('single');
+	
+	useEffect(() => {
+		onRefresh();
+	}, []);
+	
+	const [refreshing, setRefreshing] = useState(false);
+	
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		
+		props.getTournaments().then(() => {
+			setRefreshing(false);
+		});
+	}, [refreshing]);
+	
+	const renderSectionHeader = ({section: {title}}) => {
+		return (
+			<View style={styles.title}>
+				<View style={styles.titleInner}>
+					<Text style={styles.titleText}>{title}</Text>
+				</View>
+			</View>
+		);
+	};
+	
+	const sectionKeyExtractor = item => item.ID;
+	const renderItem = ({item}) => <TournamentItem item={item}/>;
+	const filter = (tournaments, value) => {
+		return tournaments.reduce((acc, item) => {
+			const items = item.data.filter(x => x.TYPE === value);
+			if (!!items.length) {
+				acc.push({...item, data: items});
+			}
+			return acc;
+		}, []);
+	};
 	
 	return (
 		<ScreenWrapper>
@@ -46,13 +84,23 @@ const TournamentsScreen = () => {
 					changeValue={setSelectedValue}
 					selected={selectedValue}
 				/>
-				<View style={styles.title}>
-					<View style={styles.titleInner}>
-						<Text style={styles.titleText}>Мои турниры</Text>
-					</View>
-				</View>
 				{selectedValue === 'single' ?
-					<SingleTournaments/> : <MultiTournaments/>
+					<SingleTournaments
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						tournaments={filter(props.tournaments, 'ONE')}
+						renderSectionHeader={renderSectionHeader}
+						sectionKeyExtractor={sectionKeyExtractor}
+						renderItem={renderItem}
+					/> :
+					<MultiTournaments
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						tournaments={filter(props.tournaments, 'COMMAND')}
+						renderSectionHeader={renderSectionHeader}
+						sectionKeyExtractor={sectionKeyExtractor}
+						renderItem={renderItem}
+					/>
 				}
 			</View>
 		</ScreenWrapper>
@@ -60,8 +108,14 @@ const TournamentsScreen = () => {
 };
 
 const mapDispatchToProps = dispatch => {
-	return bindActionCreators({},
+	return bindActionCreators({
+			getTournaments,
+		},
 		dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(TournamentsScreen);
+const mapStateToProps = state => ({
+	tournaments: state.tournaments.tournaments,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TournamentsScreen);

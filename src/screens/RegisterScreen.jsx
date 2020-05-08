@@ -153,10 +153,10 @@ const styles = EStyleSheet.create({
 });
 
 const RegisterScreen = (props) => {
-	const [avatar, setAvatar] = useState('');
+	const [photo, setPhoto] = useState('');
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
-	const [rePassword, setRePassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
 	const [rules, setRules] = useState(false);
@@ -191,8 +191,8 @@ const RegisterScreen = (props) => {
 				return setLogin(value.replace(/ /g, ''));
 			case 'password':
 				return setPassword(value.replace(/ /g, ''));
-			case 'rePassword':
-				return setRePassword(value.replace(/ /g, ''));
+			case 'confirmPassword':
+				return setConfirmPassword(value.replace(/ /g, ''));
 			case 'email':
 				return setEmail(value.replace(/ /g, ''));
 			case 'code':
@@ -244,7 +244,7 @@ const RegisterScreen = (props) => {
 			}
 			return;
 		}
-		setPasswordsIsMatch(password === rePassword);
+		setPasswordsIsMatch(password === confirmPassword);
 		setLoginIsValid(!!login);
 		setPassIsValid(passReg.test(password));
 		setEmailIsValid(regEmail.test(email));
@@ -252,7 +252,7 @@ const RegisterScreen = (props) => {
 		setFamiliar(rules);
 		if (
 			!passReg.test(password) ||
-			password !== rePassword ||
+			password !== confirmPassword ||
 			!login ||
 			!regEmail.test(email) ||
 			!phoneValidator(phone) ||
@@ -263,11 +263,11 @@ const RegisterScreen = (props) => {
 		setLoading(true);
 		props.registerNewUser({
 			login,
-			phone,
+			phone: `${phone.replace('0', '996').replace(/[^0-9]/ig, '')}`,
 			email,
 			password,
-			confirmPassword: rePassword,
-			photo: avatar,
+			confirmPassword,
+			photo,
 		}).then(data => {
 			if (!data.result) {
 				if (!!data.message) {
@@ -303,8 +303,8 @@ const RegisterScreen = (props) => {
 	const renderForm = () => (
 		<View style={{flexGrow: 1}}>
 			<PickerImage
-				avatar={avatar}
-				savePhoto={setAvatar}
+				avatar={photo}
+				savePhoto={setPhoto}
 			/>
 			<View style={styles.inputsContainer}>
 				<View style={styles.inputContainer}>
@@ -353,9 +353,9 @@ const RegisterScreen = (props) => {
 						<View style={styles.rowPass}>
 							<TextInput
 								style={styles.inputPass}
-								value={rePassword}
+								value={confirmPassword}
 								autoCompleteType={'off'}
-								onChangeText={changeFieldValue('rePassword')}
+								onChangeText={changeFieldValue('confirmPassword')}
 								underlineColorAndroid='transparent'
 								secureTextEntry={rePasswordSecure}
 								autoCapitalize={'none'}
@@ -435,7 +435,6 @@ const RegisterScreen = (props) => {
 				</ScrollView>
 				<View style={styles.footer}>
 					<Button
-						loading={loading}
 						onPress={acceptRules}
 						title={'Принять'}
 					/>

@@ -1,10 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import React from 'react';
+import { RefreshControl, SectionList, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import TournamentItem from './TournamentItem';
-import { bindActionCreators } from 'redux';
-import { getMultiTournaments } from '../store/actions/tournaments';
-import { connect } from 'react-redux';
 
 const styles = EStyleSheet.create({
 	page: {
@@ -13,40 +9,22 @@ const styles = EStyleSheet.create({
 });
 
 const MultiTournaments = (props) => {
-	useEffect(() => {
-		onRefresh();
-	}, []);
-	
-	const [refreshing, setRefreshing] = useState(false);
-	const sectionKeyExtractor = item => item.id;
-	
-	const renderItem = ({item}) => {
-		return <TournamentItem item={item}/>;
-	};
-	
-	const onRefresh = useCallback(() => {
-		setRefreshing(true);
-		
-		props.getMultiTournaments().then(() => {
-			setRefreshing(false);
-		});
-	}, [refreshing]);
-	
 	return (
 		<View style={styles.page}>
-			<FlatList
+			<SectionList
+				sections={props.tournaments}
+				keyExtractor={props.sectionKeyExtractor}
+				renderItem={props.renderItem}
+				renderSectionHeader={props.renderSectionHeader}
+				contentContainerStyle={{flexGrow: 1}}
 				showsVerticalScrollIndicator={false}
 				removeClippedSubviews={false}
 				scrollEnabled
 				scrollEventThrottle={16}
-				data={props.multiTournaments}
-				contentContainerStyle={{flexGrow: 1}}
-				renderItem={renderItem}
-				keyExtractor={sectionKeyExtractor}
 				refreshControl={
 					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={onRefresh}
+						refreshing={props.refreshing}
+						onRefresh={props.onRefresh}
 						title="Загружаем турниры"
 						tintColor='white'
 						titleColor='white'
@@ -57,15 +35,4 @@ const MultiTournaments = (props) => {
 	);
 };
 
-const mapDispatchToProps = dispatch => {
-	return bindActionCreators({
-			getMultiTournaments,
-		},
-		dispatch);
-};
-
-const mapStateToProps = state => ({
-	multiTournaments: state.tournaments.multiTournaments,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MultiTournaments);
+export default MultiTournaments;

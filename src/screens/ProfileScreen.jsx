@@ -1,28 +1,46 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Dimensions, Image, ScrollView, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenWrapper from './ScreenWrapper';
 import Button from '../components/Button';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../store/actions/profile';
 import { connect } from 'react-redux';
+import header from '../assets/img/header.png';
 
-const styles = EStyleSheet.create({});
+const styles = EStyleSheet.create({
+	$width: Dimensions.get('window').width,
+	page: {
+		flex: 1,
+	},
+	image: {
+		width: '$width',
+		height: '$width * 0.426',
+	},
+});
 
 const ProfileScreen = (props) => {
 	return (
 		<ScreenWrapper>
-			<Text style={{
-				color: 'white',
-				fontSize: 30,
-				fontWeight: 'bold',
-			}}>Profile</Text>
-			<Button
-				onPress={() => {
-					props.signOut();
-				}}
-				title={'EXIT'}
-			/>
+			<View style={styles.page}>
+				<ScrollView
+					keyboardShouldPersistTaps='handled'
+					scrollEnabled={true}
+					showsVerticalScrollIndicator={false}
+					contentContainerStyle={{flexGrow: 1}}
+				>
+					<Image
+						source={header}
+						resizeMode='cover'
+						style={styles.image}/>
+					<Button
+						onPress={() => {
+							props.signOut();
+						}}
+						title={'EXIT'}
+					/>
+				</ScrollView>
+			</View>
 		</ScreenWrapper>
 	);
 };

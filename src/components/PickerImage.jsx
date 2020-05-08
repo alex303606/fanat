@@ -51,7 +51,6 @@ export default class PickerImage extends Component {
 				height: Dimensions.get('window').width,
 				includeBase64: true,
 			}).then(image => {
-				console.log(image);
 				if (!image || !image.path) {
 					return;
 				}
