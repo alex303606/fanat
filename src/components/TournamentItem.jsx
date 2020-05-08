@@ -27,6 +27,7 @@ const styles = EStyleSheet.create({
 		height: '$width * 0.31',
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
+		resizeMode: "cover",
 	},
 	right: {
 		width: '50%',
@@ -54,11 +55,12 @@ const styles = EStyleSheet.create({
 });
 
 const TournamentItem = ({item}) => {
-	const {COUNT_REGISTER_PLAYERS, COUNT_PLAYERS, address, PRICE, START_DATE} = item;
+	const {COUNT_REGISTER_PLAYERS, COUNT_PLAYERS, CLUB_NAME, PRICE, START_DATE, GAME_PICTURE } = item;
 	const navigation = useNavigation();
 	const navigateToTournamentScreen = () => {
 		navigation.navigate('Tournament', {item});
 	};
+	console.log(GAME_PICTURE);
 	const price = !!PRICE ? `${PRICE.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} сом` : '';
 	return (
 		<TouchableOpacity
@@ -70,7 +72,7 @@ const TournamentItem = ({item}) => {
 				imageStyle={{
 					resizeMode: 'cover',
 				}}
-				source={images['fifa'] ? images['fifa'] : defaultImage}
+				source={!!GAME_PICTURE ? {uri: GAME_PICTURE} : defaultImage}
 				style={styles.backGround}>
 				<View style={styles.right}>
 					<View style={styles.row}>
@@ -85,7 +87,7 @@ const TournamentItem = ({item}) => {
 							color={'white'}
 							name={'arena'}
 							size={styles.$iconSize}/>
-						<Text numberOfLines={1} style={styles.rowText}>{address}</Text>
+						<Text numberOfLines={1} style={styles.rowText}>{CLUB_NAME}</Text>
 					</View>
 					<View style={styles.row}>
 						<CustomIcon
