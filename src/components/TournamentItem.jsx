@@ -5,15 +5,6 @@ import defaultImage from '../assets/img/default.png';
 import CustomIcon from './CustomIcon';
 import { useNavigation } from '@react-navigation/native';
 
-const images = {
-	fifa: require('../assets/img/fifa.png'),
-	ufc: require('../assets/img/ufc.png'),
-	pes: require('../assets/img/pes.png'),
-	cs: require('../assets/img/cs.png'),
-	dota: require('../assets/img/dota.png'),
-	warface: require('../assets/img/warface.png'),
-};
-
 const styles = EStyleSheet.create({
 	$width: '100%',
 	$iconSize: '12rem',
@@ -60,7 +51,6 @@ const TournamentItem = ({item}) => {
 	const navigateToTournamentScreen = () => {
 		navigation.navigate('Tournament', {item});
 	};
-	console.log(GAME_PICTURE);
 	const price = !!PRICE ? `${PRICE.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} сом` : '';
 	return (
 		<TouchableOpacity

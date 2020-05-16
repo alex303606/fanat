@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenWrapper from './ScreenWrapper';
 import TournamentsSwitcher from '../components/TournamentsSwitcher';
@@ -7,8 +7,9 @@ import SingleTournaments from '../components/SingleTournaments';
 import MultiTournaments from '../components/MultiTournaments';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getTournaments } from '../store/actions/tournaments';
+import { getTournaments, loadMoreTournaments } from '../store/actions/tournaments';
 import TournamentItem from '../components/TournamentItem';
+import config from '../../config';
 
 const styles = EStyleSheet.create({
 	page: {
@@ -36,24 +37,63 @@ const styles = EStyleSheet.create({
 		borderRadius: 5,
 		overflow: 'hidden',
 	},
+	footer: {
+		paddingBottom: '20rem',
+	},
 });
 
+const allowLoadMore = (obj) => {
+	const quantity = Object.values(obj).reduce((acc, x) => {
+		return acc + x.length;
+	}, 0);
+	return quantity < config.PAGE_SIZE;
+};
+
 const TournamentsScreen = (props) => {
+	let calledLoading = true;
 	const [selectedValue, setSelectedValue] = useState('single');
+	let [page, setPage] = useState(2);
+	const [refreshing, setRefreshing] = useState(false);
+	const [listOfTournamentsEnded, setListOfTournamentsEnded] = useState(false);
+	const onMomentumScrollBegin = () => calledLoading = false;
 	
 	useEffect(() => {
 		onRefresh();
 	}, []);
 	
-	const [refreshing, setRefreshing] = useState(false);
-	
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
-		
-		props.getTournaments().then(() => {
+		props.getTournaments().then((res) => {
+			setListOfTournamentsEnded(allowLoadMore(res));
 			setRefreshing(false);
+			setPage(2);
 		});
 	}, [refreshing]);
+	
+	const handleLoadMore = () => {
+		if (refreshing || calledLoading || listOfTournamentsEnded) {
+			return;
+		}
+		console.log('handleLoadMore');
+		setRefreshing(true);
+		props.loadMoreTournaments(page).then((res) => {
+			setListOfTournamentsEnded(allowLoadMore(res));
+			setRefreshing(false);
+			setPage(++page);
+		});
+	};
+	
+	const filter = (value) => {
+		return props.tournaments.reduce((acc, item) => {
+			const items = item.data.filter(x => {
+				return x.TYPE === value;
+			});
+			if (!!items.length) {
+				acc.push({...item, data: items});
+			}
+			return acc;
+		}, []);
+	};
 	
 	const renderSectionHeader = ({section: {title}}) => {
 		return (
@@ -67,14 +107,16 @@ const TournamentsScreen = (props) => {
 	
 	const sectionKeyExtractor = item => item.ID;
 	const renderItem = ({item}) => <TournamentItem item={item}/>;
-	const filter = (tournaments, value) => {
-		return tournaments.reduce((acc, item) => {
-			const items = item.data.filter(x => x.TYPE === value);
-			if (!!items.length) {
-				acc.push({...item, data: items});
-			}
-			return acc;
-		}, []);
+	
+	const renderFooter = () => {
+		if (!refreshing) {
+			return <View/>;
+		}
+		return <ActivityIndicator
+			style={styles.footer}
+			color={'white'}
+			animating
+			size='large'/>;
 	};
 	
 	return (
@@ -88,18 +130,26 @@ const TournamentsScreen = (props) => {
 					<SingleTournaments
 						refreshing={refreshing}
 						onRefresh={onRefresh}
-						tournaments={filter(props.tournaments, 'ONE')}
+						tournaments={filter('ONE')}
 						renderSectionHeader={renderSectionHeader}
 						sectionKeyExtractor={sectionKeyExtractor}
 						renderItem={renderItem}
+						renderFooter={renderFooter}
+						getTournaments={props.getTournaments}
+						handleLoadMore={handleLoadMore}
+						onMomentumScrollBegin={onMomentumScrollBegin}
 					/> :
 					<MultiTournaments
 						refreshing={refreshing}
 						onRefresh={onRefresh}
-						tournaments={filter(props.tournaments, 'COMMAND')}
+						tournaments={filter('COMMAND')}
 						renderSectionHeader={renderSectionHeader}
 						sectionKeyExtractor={sectionKeyExtractor}
 						renderItem={renderItem}
+						renderFooter={renderFooter}
+						getTournaments={props.getTournaments}
+						handleLoadMore={handleLoadMore}
+						onMomentumScrollBegin={onMomentumScrollBegin}
 					/>
 				}
 			</View>
@@ -110,6 +160,7 @@ const TournamentsScreen = (props) => {
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
 			getTournaments,
+			loadMoreTournaments,
 		},
 		dispatch);
 };

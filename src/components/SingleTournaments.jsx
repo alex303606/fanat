@@ -21,6 +21,10 @@ const SingleTournaments = (props) => {
 				removeClippedSubviews={false}
 				scrollEnabled
 				scrollEventThrottle={16}
+				onEndReached={props.handleLoadMore}
+				onEndReachedThreshold={0.1}
+				onMomentumScrollBegin={props.onMomentumScrollBegin}
+				ListFooterComponent={props.renderFooter}
 				refreshControl={
 					<RefreshControl
 						refreshing={props.refreshing}
