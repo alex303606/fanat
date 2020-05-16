@@ -15,11 +15,6 @@ const middlewares = [
 	thunkMiddleware,
 ];
 
-if (__DEV__) { // eslint-disable-line
-	const createFlipperMiddleware = require('rn-redux-middleware-flipper').default;
-	middlewares.push(createFlipperMiddleware());
-}
-
 const enhancers = composeEnhancers(applyMiddleware.apply({}, middlewares));
 
 const appReducer = combineReducers({
