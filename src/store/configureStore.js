@@ -25,6 +25,7 @@ const appReducer = combineReducers({
 const persistConfig = {
 	key: 'root',
 	storage: AsyncStorage,
+	blacklist: ['tournaments']
 };
 
 const persistedReducer = persistReducer(persistConfig, appReducer);

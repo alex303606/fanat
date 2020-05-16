@@ -40,8 +40,8 @@ const TournamentsSwitcher = (props) => {
 		<View style={styles.switch}>
 			<TouchableOpacity
 				activeOpacity={0.7}
-				onPress={() => props.changeValue('single')}
-				style={[styles.item, props.selected === 'single' && styles.active]}>
+				onPress={() => props.changeValue('ONE')}
+				style={[styles.item, props.selected === 'ONE' && styles.active]}>
 				<CustomIcon
 					color={'white'}
 					name={'single'}
@@ -50,8 +50,8 @@ const TournamentsSwitcher = (props) => {
 			</TouchableOpacity>
 			<TouchableOpacity
 				activeOpacity={0.7}
-				onPress={() => props.changeValue('multi')}
-				style={[styles.item, props.selected === 'multi' && styles.active]}>
+				onPress={() => props.changeValue('COMMAND')}
+				style={[styles.item, props.selected === 'COMMAND' && styles.active]}>
 				<Text numberOfLines={1} style={styles.text}>Командные</Text>
 				<CustomIcon
 					color={'white'}

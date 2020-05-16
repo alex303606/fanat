@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import TournamentsSwitcher from './TournamentsSwitcher';
-import Button from './Button';
 import CustomModal from './CustomModal';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { sortMultiTournaments, sortSingleTournaments } from '../store/actions/tournaments';
+import {
+	getGames,
+	filterByGameIdCommand,
+	filterByGameIdOne,
+	setTournamentType,
+} from '../store/actions/tournaments';
+import ImageWithLoader from './ImageWithLoader';
+import TournamentsSwitcher from './TournamentsSwitcher';
 
 const styles = EStyleSheet.create({
 	title: {
@@ -29,90 +34,126 @@ const styles = EStyleSheet.create({
 		borderBottomWidth: 1,
 		borderColor: 'white',
 	},
+	contentContainerStyle: {
+		flexGrow: 1,
+		paddingVertical: 20,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		flexWrap: 'wrap',
+	},
+	imageWithLoader: {
+		width: '100%',
+		height: '40rem',
+	},
+	game: {
+		width: '48%',
+		justifyContent: 'center',
+		borderRadius: '5rem',
+		marginVertical: '10rem',
+		padding: '10rem',
+	},
 });
 
-const FilterModal = ({modalVisible, changeModalVisibleHandler, sortSingleTournaments, sortMultiTournaments}) => {
-	const [selectedValue, setSelectedValue] = useState('single');
-	const [singleFilterValue, setSingleFilterValue] = useState('');
-	const [multiFilterValue, setMultiFilterValue] = useState('');
+const FilterModal = (props) => {
+	useEffect(() => {
+		props.getGames();
+	}, []);
+	const [selectedGameOne, selectGameOne] = useState(undefined);
+	const [selectedGameCommand, selectGameCommand] = useState(undefined);
 	
 	const acceptFilter = () => {
-		if (!!singleFilterValue) {
-			sortSingleTournaments(singleFilterValue);
-		}
-		if (!!multiFilterValue) {
-			sortMultiTournaments(multiFilterValue);
-		}
-		changeModalVisibleHandler();
+		props.filterByGameIdOne(selectedGameOne);
+		props.filterByGameIdCommand(selectedGameCommand);
+		setTimeout(props.changeModalVisibleHandler, 1000);
+	};
+	
+	const resetFilter = () => {
+		selectGameOne(undefined);
+		selectGameCommand(undefined);
+		props.filterByGameIdOne(undefined);
+		props.filterByGameIdCommand(undefined);
+		setTimeout(props.changeModalVisibleHandler, 1000);
+	};
+	
+	const renderGame = game => {
+		return (
+			<TouchableOpacity
+				activeOpacity={0.7}
+				onPress={() => selectGameOne(game.ID)}
+				key={game.ID}
+				style={[styles.game, game.ID === selectedGameOne && {backgroundColor: '#D51E49'}]}
+			>
+				<ImageWithLoader
+					resizeMode='contain'
+					static
+					style={styles.imageWithLoader}
+					source={game.ICON}
+				/>
+			</TouchableOpacity>
+		);
+	};
+	
+	const renderCommandGame = game => {
+		return (
+			<TouchableOpacity
+				activeOpacity={0.7}
+				onPress={() => selectGameCommand(game.ID)}
+				key={game.ID}
+				style={[styles.game, game.ID === selectedGameCommand && {backgroundColor: '#D51E49'}]}
+			>
+				<ImageWithLoader
+					resizeMode='contain'
+					static
+					style={styles.imageWithLoader}
+					source={game.ICON}
+				/>
+			</TouchableOpacity>
+		);
 	};
 	
 	return (
 		<CustomModal
-			modalVisible={modalVisible}
-			setModalVisible={changeModalVisibleHandler}
+			modalVisible={props.modalVisible}
+			setModalVisible={props.changeModalVisibleHandler}
 		>
 			<View style={styles.header}>
 				<TouchableOpacity activeOpacity={0.7} onPress={acceptFilter}>
 					<Text style={styles.headerButton}>Применить</Text>
 				</TouchableOpacity>
-				<Text style={styles.title}>Сортировка игр</Text>
-				<TouchableOpacity activeOpacity={0.7} onPress={changeModalVisibleHandler}>
-					<Text style={styles.headerButton}>Закрыть</Text>
+				<Text style={styles.title}>Фильтрация игр</Text>
+				<TouchableOpacity activeOpacity={0.7} onPress={resetFilter}>
+					<Text style={styles.headerButton}>Сбросить</Text>
 				</TouchableOpacity>
 			</View>
 			<TournamentsSwitcher
-				changeValue={setSelectedValue}
-				selected={selectedValue}
+				changeValue={props.setTournamentType}
+				selected={props.tournamentType}
 			/>
-			{selectedValue === 'single' ?
-				<ScrollView contentContainerStyle={{flexGrow: 1, paddingVertical: 20}}>
-					<Button
-						onPress={() => setSingleFilterValue('fifa')}
-						title='fifa'
-						style={{
-							marginVertical: 10,
-							backgroundColor: singleFilterValue === 'fifa' ? 'blue' : 'red',
-						}}
-					/>
-					<Button
-						onPress={() => setSingleFilterValue('pes')}
-						title='pes'
-						style={{
-							marginVertical: 10,
-							backgroundColor: singleFilterValue === 'pes' ? 'blue' : 'red',
-						}}
-					/>
-				</ScrollView> :
-				<ScrollView contentContainerStyle={{flexGrow: 1, paddingVertical: 20}}>
-					<Button
-						onPress={() => setMultiFilterValue('fifa')}
-						title='fifa'
-						style={{
-							marginVertical: 10,
-							backgroundColor: multiFilterValue === 'fifa' ? 'blue' : 'red',
-						}}
-					/>
-					<Button
-						onPress={() => setMultiFilterValue('pes')}
-						title='pes'
-						style={{
-							marginVertical: 10,
-							backgroundColor: multiFilterValue === 'pes' ? 'blue' : 'red',
-						}}
-					/>
+			{props.tournamentType === 'ONE' ?
+				<ScrollView contentContainerStyle={styles.contentContainerStyle}>
+					{props.games.map(renderGame)}
+				</ScrollView>
+				: <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+					{props.games.map(renderCommandGame)}
 				</ScrollView>
 			}
-		
 		</CustomModal>
 	);
 };
 
+const mapStateToProps = state => ({
+	games: state.tournaments.games,
+	tournamentType: state.tournaments.tournamentType,
+});
+
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
-			sortSingleTournaments,
-			sortMultiTournaments,
+			getGames,
+			filterByGameIdOne,
+			filterByGameIdCommand,
+			setTournamentType,
 		},
 		dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(FilterModal);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterModal);

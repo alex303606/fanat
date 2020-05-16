@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { RefreshControl, SectionList, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { getCommandTournaments, loadMoreCommandTournaments } from '../store/actions/tournaments';
+import ListFooterComponent from './ListFooterComponent';
 
 const styles = EStyleSheet.create({
 	page: {
@@ -9,6 +13,16 @@ const styles = EStyleSheet.create({
 });
 
 const MultiTournaments = (props) => {
+	const onRefresh = useCallback(() => {
+		props.getCommandTournaments();
+	}, [props.refreshing]);
+	
+	const handleLoadMore = () => {
+		if (props.refreshing || props.listIsOver) {
+			return;
+		}
+		props.loadMoreCommandTournaments();
+	};
 	return (
 		<View style={styles.page}>
 			<SectionList
@@ -21,14 +35,13 @@ const MultiTournaments = (props) => {
 				removeClippedSubviews={false}
 				scrollEnabled
 				scrollEventThrottle={16}
-				onEndReached={props.handleLoadMore}
+				onEndReached={handleLoadMore}
 				onEndReachedThreshold={0.1}
-				onMomentumScrollBegin={props.onMomentumScrollBegin}
-				ListFooterComponent={props.renderFooter}
+				ListFooterComponent={<ListFooterComponent loading={props.refreshing}/>}
 				refreshControl={
 					<RefreshControl
 						refreshing={props.refreshing}
-						onRefresh={props.onRefresh}
+						onRefresh={onRefresh}
 						title="Загружаем турниры"
 						tintColor='white'
 						titleColor='white'
@@ -39,4 +52,18 @@ const MultiTournaments = (props) => {
 	);
 };
 
-export default MultiTournaments;
+const mapDispatchToProps = dispatch => {
+	return bindActionCreators({
+			getCommandTournaments,
+			loadMoreCommandTournaments,
+		},
+		dispatch);
+};
+
+const mapStateToProps = state => ({
+	tournaments: state.tournaments.command.tournaments,
+	refreshing: state.tournaments.command.refreshing,
+	listIsOver: state.tournaments.command.listIsOver,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MultiTournaments);

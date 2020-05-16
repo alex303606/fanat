@@ -9,6 +9,7 @@ import { TouchableOpacity, View } from 'react-native';
 import CustomIcon from '../components/CustomIcon';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import FilterModal from '../components/FilterModal';
+import { connect } from 'react-redux';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +20,7 @@ const styles = EStyleSheet.create({
 	$20: '20rem',
 });
 
-const TournamentsNavigator = () => {
+const TournamentsNavigator = (props) => {
 	const [modalVisible, changeModalVisible] = useState(false);
 	const changeModalVisibleHandler = () => changeModalVisible(!modalVisible);
 	
@@ -47,7 +48,7 @@ const TournamentsNavigator = () => {
 								style={styles.button}
 							>
 								<CustomIcon
-									color={'white'}
+									color={props.filterGameIdOne || props.filterGameIdCommand ? '#D51E49' : 'white'}
 									name={'filter'}
 									size={styles.$20}/>
 							</TouchableOpacity>
@@ -82,4 +83,9 @@ const TournamentsNavigator = () => {
 	);
 };
 
-export default TournamentsNavigator;
+const mapStateToProps = state => ({
+	filterGameIdOne: state.tournaments.one.filterGameID,
+	filterGameIdCommand: state.tournaments.command.filterGameID,
+});
+
+export default connect(mapStateToProps, null)(TournamentsNavigator);
