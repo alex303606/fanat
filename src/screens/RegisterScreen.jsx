@@ -269,6 +269,7 @@ const RegisterScreen = (props) => {
 			confirmPassword,
 			photo,
 		}).then(data => {
+			console.log(data); // TODO Регистрация не работает - Неверный api key
 			if (!data.result) {
 				if (!!data.message) {
 					setUserAlreadyExist(data.message.includes(login));
