@@ -57,15 +57,21 @@ export const recoverAccountSendPass = ({login, code, password, confirmPassword})
 
 export const registerNewUser = (data) => {
 	const params = [
-		{name: 'login', data: data.login},
-		{name: 'phone', data: data.phone},
-		{name: 'email', data: data.email},
-		{name: 'password', data: data.password},
-		{name: 'confirmPassword', data: data.confirmPassword},
+		{name: 'LOGIN', data: data.login},
+		{name: 'PHONE', data: data.phone},
+		{name: 'EMAIL', data: data.email},
+		{name: 'PASSWORD', data: data.password},
+		{name: 'CONFIRM_PASSWORD', data: data.confirmPassword},
 		{name: 'API_KEY', data: config.apiKey},
+		{name: 'TYPE', data: 'register'},
 	];
 	if (data.photo && !!data.photo.uri) {
-		params.push({name: 'image', filename: 'image.jpg', data: RNFetchBlob.wrap(data.photo.uri)});
+		params.push({
+			name: 'image',
+			type: data.photo.type || 'image/jpg',
+			filename: 'image.jpg',
+			data: RNFetchBlob.wrap(data.photo.uri),
+		});
 	}
 	return dispatch => {
 		return RNFetchBlob.config({
