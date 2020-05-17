@@ -8,7 +8,8 @@ import { bindActionCreators } from 'redux';
 import { recoverAccountSendEmail, recoverAccountSendPass } from '../store/actions/profile';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-const passReg = /^(?=.*\d)(?=.*[a-z]).{8,}/;
+import { passReg } from '../utils';
+
 
 const styles = EStyleSheet.create({
 	page: {

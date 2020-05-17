@@ -12,9 +12,7 @@ import LoremText from '../components/LoremText';
 import { bindActionCreators } from 'redux';
 import { confirmationCode, registerNewUser } from '../store/actions/profile';
 import { connect } from 'react-redux';
-
-const passReg = /^(?=.*\d)(?=.*[a-z]).{8,}/;
-const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+import { passReg, regEmail } from '../utils';
 
 const phoneValidator = (phone) => {
 	const phoneNumber = parsePhoneNumberFromString(phone.replace(0, '+996'));
@@ -269,7 +267,6 @@ const RegisterScreen = (props) => {
 			confirmPassword,
 			photo,
 		}).then(data => {
-			console.log(data); // TODO Регистрация не работает - Неверный api key
 			if (!data.result) {
 				if (!!data.message) {
 					setUserAlreadyExist(data.message.includes(login));

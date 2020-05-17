@@ -21,3 +21,7 @@ export const tournamentsToArray = tournaments => {
 		};
 	});
 };
+
+export const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+export const passReg = /^(?=.*\d)(?=.*[a-z]).{8,}/;

@@ -37,6 +37,8 @@ export default class PickerImage extends Component {
 		ImagePicker.openPicker({
 			cropping: false,
 			compressImageQuality: 1,
+			compressImageMaxWidth: 1000,
+			compressImageMaxHeight: 1000,
 			width: 500,
 			height: 500,
 			includeExif: true,
@@ -49,17 +51,14 @@ export default class PickerImage extends Component {
 				path: response.path,
 				width: Dimensions.get('window').width,
 				height: Dimensions.get('window').width,
-				includeBase64: true,
 			}).then(image => {
 				if (!image || !image.path) {
 					return;
 				}
 				let avatarSource = {uri: image.path, type: image.mime};
 				this.props.savePhoto(avatarSource);
-			}).catch((err) => {
-				console.log('openCropper error = ' + err);
 			});
-		}).catch(e => console.log(e));
+		});
 	};
 	
 	render() {

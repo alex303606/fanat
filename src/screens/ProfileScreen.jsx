@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenWrapper from './ScreenWrapper';
 import Stars from 'react-native-stars';
 import { bindActionCreators } from 'redux';
-import { signOut } from '../store/actions/profile';
 import { connect } from 'react-redux';
 import header from '../assets/img/header.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TabBar from '../components/TabBar';
 import ImageWithLoader from '../components/ImageWithLoader';
+import userAvatar from '../assets/img/userAvatar.jpg';
 
 const styles = EStyleSheet.create({
 	$width: Dimensions.get('window').width,
@@ -20,9 +20,7 @@ const styles = EStyleSheet.create({
 		width: '$width',
 		height: '$width * 0.426',
 	},
-	avatar: {
-		width: '100rem',
-		height: '100rem',
+	userAvatar: {
 		borderRadius: '50rem',
 		borderWidth: '2rem',
 		borderColor: 'white',
@@ -31,6 +29,10 @@ const styles = EStyleSheet.create({
 		marginLeft: '-50rem',
 		bottom: '-50rem',
 		overflow: 'hidden',
+	},
+	avatar: {
+		width: '100rem',
+		height: '100rem',
 	},
 	head: {
 		position: 'relative',
@@ -68,10 +70,13 @@ const ProfileScreen = (props) => {
 							source={header}
 							resizeMode='cover'
 							style={styles.image}/>
-						<ImageWithLoader
-							style={styles.avatar}
-							source={props.PHOTO}
-						/>
+							<View style={styles.userAvatar}>
+								{!!props.PHOTO ?
+									<ImageWithLoader resizeMode='cover' style={styles.avatar} source={props.PHOTO}/> :
+									<Image resizeMode='cover' source={userAvatar} style={styles.avatar}/>
+								}
+							</View>
+					
 					</View>
 					<View>
 						<Text style={styles.login}>{props.LOGIN}</Text>
@@ -103,7 +108,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
-			signOut,
 		},
 		dispatch);
 };

@@ -115,3 +115,37 @@ export const signOut = () => {
 		dispatch({type: SIGN_OUT});
 	};
 };
+
+export const editUser = (data) => {
+	return (dispatch, getState) => {
+		const store = getState();
+		const login = store.profile.user.LOGIN;
+		const params = [
+			{name: 'LOGIN', data: login},
+			{name: 'EMAIL', data: data.email},
+			{name: 'API_KEY', data: config.apiKey},
+			{name: 'TYPE', data: 'edit_user'},
+		];
+		if (data.photo && !!data.photo.uri && !!data.photo.type) {
+			params.push({
+				name: 'image',
+				type: data.photo.type,
+				filename: 'image.jpg',
+				data: RNFetchBlob.wrap(data.photo.uri),
+			});
+		}
+		return RNFetchBlob.config({
+			trusty: true,
+		}).fetch('POST', config.baseURL, {
+			'Content-Type': 'multipart/form-data',
+		}, params).then((resp) => {
+			if (resp.data) {
+				const userData = JSON.parse(resp.data);
+				if (userData.result && userData.data) {
+					dispatch(loginUserSuccess(userData.data));
+				}
+				return userData;
+			}
+		});
+	};
+};
