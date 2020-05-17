@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenWrapper from './ScreenWrapper';
 import { bindActionCreators } from 'redux';
@@ -10,11 +10,17 @@ const styles = EStyleSheet.create({});
 const StatisticsScreen = (props) => {
 	return (
 		<ScreenWrapper>
-			<Text style={{
-				color: 'white',
-				fontSize: 30,
-				fontWeight: 'bold',
-			}}>Statistics</Text>
+			<View style={{
+				flex: 1,
+				justifyContent: 'center',
+			}}>
+				<Text style={{
+					color: 'white',
+					fontSize: 20,
+					fontWeight: 'bold',
+					textAlign: 'center',
+				}}>Статистика в разработке</Text>
+			</View>
 		</ScreenWrapper>
 	);
 };

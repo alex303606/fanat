@@ -43,76 +43,76 @@ const stats = [
 		points2: '50',
 		points3: '49',
 	},
-    {
-        date: '02.01.20',
-        game: 'FIFA20',
-        points1: '0',
-        points2: '24',
-        points3: '55',
-    },
-    {
-        date: '20.02.20',
-        game: 'DOTA2',
-        points1: '30',
-        points2: '20',
-        points3: '5',
-    },
-    {
-        date: '25.03.20',
-        game: 'PES2013',
-        points1: '30',
-        points2: '20',
-        points3: '5',
-    },
-    {
-        date: '1.05.20',
-        game: 'CS-GO',
-        points1: '0',
-        points2: '10',
-        points3: '2',
-    },
-    {
-        date: '19.05.20',
-        game: 'UFC',
-        points1: '50',
-        points2: '50',
-        points3: '49',
-    },
-    {
-        date: '02.01.20',
-        game: 'FIFA20',
-        points1: '0',
-        points2: '24',
-        points3: '55',
-    },
-    {
-        date: '20.02.20',
-        game: 'DOTA2',
-        points1: '30',
-        points2: '20',
-        points3: '5',
-    },
-    {
-        date: '25.03.20',
-        game: 'PES2013',
-        points1: '30',
-        points2: '20',
-        points3: '5',
-    },
-    {
-        date: '1.05.20',
-        game: 'CS-GO',
-        points1: '0',
-        points2: '10',
-        points3: '2',
-    },
-    {
-        date: '19.05.20',
-        game: 'UFC',
-        points1: '50',
-        points2: '50',
-        points3: '49',
-    },
+	{
+		date: '02.01.20',
+		game: 'FIFA20',
+		points1: '0',
+		points2: '24',
+		points3: '55',
+	},
+	{
+		date: '20.02.20',
+		game: 'DOTA2',
+		points1: '30',
+		points2: '20',
+		points3: '5',
+	},
+	{
+		date: '25.03.20',
+		game: 'PES2013',
+		points1: '30',
+		points2: '20',
+		points3: '5',
+	},
+	{
+		date: '1.05.20',
+		game: 'CS-GO',
+		points1: '0',
+		points2: '10',
+		points3: '2',
+	},
+	{
+		date: '19.05.20',
+		game: 'UFC',
+		points1: '50',
+		points2: '50',
+		points3: '49',
+	},
+	{
+		date: '02.01.20',
+		game: 'FIFA20',
+		points1: '0',
+		points2: '24',
+		points3: '55',
+	},
+	{
+		date: '20.02.20',
+		game: 'DOTA2',
+		points1: '30',
+		points2: '20',
+		points3: '5',
+	},
+	{
+		date: '25.03.20',
+		game: 'PES2013',
+		points1: '30',
+		points2: '20',
+		points3: '5',
+	},
+	{
+		date: '1.05.20',
+		game: 'CS-GO',
+		points1: '0',
+		points2: '10',
+		points3: '2',
+	},
+	{
+		date: '19.05.20',
+		game: 'UFC',
+		points1: '50',
+		points2: '50',
+		points3: '49',
+	},
 ];
 const games = [
 	{
@@ -239,12 +239,12 @@ const styles = EStyleSheet.create({
 		fontSize: '14rem',
 		textAlign: 'center',
 	},
-    statsItemText: {
-        color: 'white',
-        width: '20%',
-        fontSize: '12rem',
-        textAlign: 'center',
-    },
+	statsItemText: {
+		color: 'white',
+		width: '20%',
+		fontSize: '12rem',
+		textAlign: 'center',
+	},
 	statsRow: {
 		marginBottom: '10rem',
 		flexDirection: 'row',
@@ -320,8 +320,8 @@ const TabBar = () => {
 		</View>
 	);
 	
-	const renderAward = (award) => (
-		<View style={styles.award}>
+	const renderAward = (award, index) => (
+		<View key={index} style={styles.award}>
 			<Image
 				resizeMode='cover'
 				source={rewardIcon}
