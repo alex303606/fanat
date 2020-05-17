@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenWrapper from './ScreenWrapper';
@@ -7,9 +7,9 @@ import { bindActionCreators } from 'redux';
 import { signOut } from '../store/actions/profile';
 import { connect } from 'react-redux';
 import header from '../assets/img/header.png';
-import ImageWithLoader from '../components/ImageWithLoader';
-import Button from '../components/Button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import TabBar from '../components/TabBar';
+import ImageWithLoader from '../components/ImageWithLoader';
 
 const styles = EStyleSheet.create({
 	$width: Dimensions.get('window').width,
@@ -70,7 +70,7 @@ const ProfileScreen = (props) => {
 							style={styles.image}/>
 						<ImageWithLoader
 							style={styles.avatar}
-							source={'https://scontent.ffru7-1.fna.fbcdn.net/v/t1.0-9/29542705_1453112034816452_1230413903837738427_n.jpg?_nc_cat=105&_nc_sid=85a577&_nc_oc=AQm6wXlHFV4Xzc_KtprPzz6RmoTammMewQEEEWQF3szjFeRXxCuEOFksomNCpAODCaU&_nc_ht=scontent.ffru7-1.fna&oh=1e9d532d193a3c8b80405db51fff3d35&oe=5EE618C2'}
+							source={props.PHOTO}
 						/>
 					</View>
 					<View>
@@ -86,14 +86,7 @@ const ProfileScreen = (props) => {
 						/>
 						<Text style={styles.rating}>#12/100</Text>
 					</View>
-					
-					
-					<Button
-						onPress={() => {
-							props.signOut();
-						}}
-						title={'EXIT'}
-					/>
+					<TabBar/>
 				</ScrollView>
 			</View>
 		</ScreenWrapper>

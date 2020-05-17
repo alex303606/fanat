@@ -85,7 +85,6 @@ const FilterModal = (props) => {
 			>
 				<ImageWithLoader
 					resizeMode='contain'
-					static
 					style={styles.imageWithLoader}
 					source={game.ICON}
 				/>
