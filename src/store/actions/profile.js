@@ -100,8 +100,8 @@ export const loginUser = (login, password) => {
 	};
 };
 
-const loginUserSuccess = (id) => {
-	return {type: SIGN_IN_SUCCESS, id};
+const loginUserSuccess = (user) => {
+	return {type: SIGN_IN_SUCCESS, user};
 };
 
 export const signOut = () => {

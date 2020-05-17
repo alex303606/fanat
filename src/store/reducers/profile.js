@@ -2,13 +2,19 @@ import { SIGN_IN_SUCCESS, SIGN_OUT } from '../actions/actionTypes';
 
 const initialState = {
 	userIsLoggedIn: false,
-	id: '',
+	user: {
+		EMAIL: '',
+		ID: '',
+		LOGIN: '',
+		PHONE: '',
+		PHOTO: '',
+	},
 };
 
 const userReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case SIGN_IN_SUCCESS:
-			return {...state, id: action.id, userIsLoggedIn: true};
+			return {...state, user: action.user, userIsLoggedIn: true};
 		case SIGN_OUT:
 			return initialState;
 		default:

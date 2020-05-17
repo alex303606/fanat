@@ -10,7 +10,6 @@ export const allowLoadMore = (obj) => {
 	const quantity = Object.values(obj).reduce((acc, x) => {
 		return acc + x.length;
 	}, 0);
-	console.log(quantity);
 	return quantity < config.PAGE_SIZE;
 };
 
