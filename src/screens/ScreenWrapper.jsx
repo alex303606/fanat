@@ -7,6 +7,7 @@ const styles = EStyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		backgroundColor: '#19112C',
+		paddingBottom: '20rem',
 	},
 });
 

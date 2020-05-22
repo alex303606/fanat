@@ -15,8 +15,22 @@ import {
 } from './actionTypes';
 
 export const registerQrCode = (code) => {
-	return dispatch => {
-		return wait(2000);
+	return (dispatch, getState) => {
+		const store = getState();
+		const login = store.profile.user.LOGIN;
+		const params = {
+			TYPE: 'registerInTournaments',
+			LOGIN: login,
+			ID: code,
+		};
+		return axios.post('', params).then(
+			response => {
+				if (response && response.data) {
+					return response.data;
+				}
+				return undefined;
+			},
+		);
 	};
 };
 
@@ -67,6 +81,23 @@ export const getCommandTournaments = () => {
 					dispatch(getCommandTournamentsSuccess(response.data.data));
 					return response.data.data;
 				}
+			},
+		);
+	};
+};
+
+export const getCommandTournamentById = (id) => {
+	return (dispatch, getState) => {
+		const params = {
+			TYPE: 'getTournament',
+			ID: id,
+		};
+		return axios.post('', params).then(
+			response => {
+				if (response && response.data && response.data.data) {
+					return response.data.data;
+				}
+				return undefined;
 			},
 		);
 	};

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ScreenWrapper from './ScreenWrapper';
 import { ScrollView, Text, View } from 'react-native';
 import Button from '../components/Button';
@@ -9,7 +9,7 @@ import { RNCamera as Camera } from 'react-native-camera';
 import TournamentItem from '../components/TournamentItem';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { registerQrCode } from '../store/actions/tournaments';
+import { getCommandTournamentById, registerQrCode } from '../store/actions/tournaments';
 
 const styles = EStyleSheet.create({
 	page: {
@@ -21,34 +21,64 @@ const styles = EStyleSheet.create({
 		paddingHorizontal: '10rem',
 	},
 	bottom: {
-		paddingHorizontal: '10rem',
+		marginBottom: '20rem',
 	},
 	title: {
 		color: 'white',
-		fontSize: '20rem',
+		fontSize: '16rem',
+		lineHeight: '18rem',
+		fontWeight: 'bold',
+		textAlign: 'center',
+	},
+	error: {
+		color: '#D51E49',
+		fontSize: '16rem',
+		lineHeight: '18rem',
+		marginBottom: '20rem',
 		fontWeight: 'bold',
 		textAlign: 'center',
 	},
 });
 
-const ScannerScreen = ({route, registerQrCode}) => {
+const ScannerScreen = (props) => {
 	const navigation = useNavigation();
-	const item = route.params && route.params.item ? route.params.item : undefined;
+	const [item, setItem] = useState(undefined);
 	const [code, setCode] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState('');
+	
+	useEffect(() => {
+		if (props.route.params && props.route.params.item) {
+			setItem(props.route.params.item);
+		}
+	}, []);
 	
 	const onSuccess = e => {
+		if (!e.data) {
+			return;
+		}
 		setCode(e.data);
+		props.getCommandTournamentById(e.data).then(result => {
+			if (!!result) {
+				setItem(result);
+			}
+		});
 	};
 	
 	const register = () => {
-		if (!item || !code) {
+		if (!code) {
 			return;
 		}
 		setLoading(true);
-		registerQrCode(code).then(() => {
+		props.registerQrCode(code).then((res) => {
 			setLoading(false);
-			return navigation.navigate('Successfully', {item})
+			if (res && res.result) {
+				return navigation.navigate('Successfully', {item});
+			}
+			
+			if (res && !!res.message) {
+				setError(res.message);
+			}
 		});
 	};
 	
@@ -62,6 +92,13 @@ const ScannerScreen = ({route, registerQrCode}) => {
 			>
 				<View style={styles.top}>
 					{!!item && <TournamentItem item={item}/>}
+					{!!error && <Text style={styles.error}>{error}</Text>}
+					<View style={styles.bottom}>
+						{!!code && !!item ?
+							<Button loading={loading} onPress={register} title={'Зарегистрироваться'}/> :
+							<Text style={styles.title}>Отсканируйте QR код</Text>
+						}
+					</View>
 				</View>
 				<QRCodeScanner
 					fadeIn={false}
@@ -69,12 +106,6 @@ const ScannerScreen = ({route, registerQrCode}) => {
 					flashMode={Camera.Constants.FlashMode.off}
 					cameraProps={{ratio: '1:1'}}
 				/>
-				<View style={styles.bottom}>
-					{!!code ?
-						<Button loading={loading} onPress={register} title={'Далее'}/> :
-						<Text style={styles.title}>Отсканируйте QR код</Text>
-					}
-				</View>
 			</ScrollView>
 		</ScreenWrapper>
 	);
@@ -83,6 +114,7 @@ const ScannerScreen = ({route, registerQrCode}) => {
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
 			registerQrCode,
+			getCommandTournamentById,
 		},
 		dispatch);
 };
