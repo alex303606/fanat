@@ -68,7 +68,7 @@ const TournamentsNavigator = (props) => {
 					name="Scanner"
 					options={{
 						title: 'QR код',
-						cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+						cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
 					}}
 					component={ScannerScreen}/>
 				<Stack.Screen
