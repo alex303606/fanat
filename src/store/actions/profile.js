@@ -106,6 +106,26 @@ export const loginUser = (login, password) => {
 	};
 };
 
+export const changePassword = (password, rePassword) => {
+	return (dispatch, getState) => {
+		const store = getState();
+		const login = store.profile.user.LOGIN;
+		const params = {
+			TYPE: 'change_password_profile',
+			LOGIN: login,
+			PASSWORD: password,
+			CONFIRM_PASSWORD: rePassword,
+		};
+		return axios.post('', params).then(
+			response => {
+				if (response && response.data) {
+					return response.data;
+				}
+			},
+		);
+	};
+};
+
 const loginUserSuccess = (user) => {
 	return {type: SIGN_IN_SUCCESS, user};
 };

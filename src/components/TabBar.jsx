@@ -123,7 +123,7 @@ const games = [
 	{
 		name: 'PES2013',
 		rating: 5,
-		image: 'https://lh3.googleusercontent.com/proxy/kaRnScVDBH4dEXIFpbExnaY3QF8NaNe5WwLnKmOhXtvPe4cl3gNLBIVZhuQMOrcPy1siymSzxrD-NCQOS6VBp4d_gDXMeA',
+		image: 'https://www.ferra.ru/thumb/608x0/filters:quality(75):no_upscale()/imgs/2018/11/26/17/2636011/36812af23d1c5de5385f898e40c095b71ab5a95c.jpg',
 	},
 	{
 		name: 'FIFA20',
@@ -133,7 +133,7 @@ const games = [
 	{
 		name: 'PES2013',
 		rating: 5,
-		image: 'https://lh3.googleusercontent.com/proxy/kaRnScVDBH4dEXIFpbExnaY3QF8NaNe5WwLnKmOhXtvPe4cl3gNLBIVZhuQMOrcPy1siymSzxrD-NCQOS6VBp4d_gDXMeA',
+		image: 'https://www.ferra.ru/thumb/608x0/filters:quality(75):no_upscale()/imgs/2018/11/26/17/2636011/36812af23d1c5de5385f898e40c095b71ab5a95c.jpg',
 	},
 	{
 		name: 'FIFA20',
@@ -143,7 +143,7 @@ const games = [
 	{
 		name: 'PES2013',
 		rating: 5,
-		image: 'https://lh3.googleusercontent.com/proxy/kaRnScVDBH4dEXIFpbExnaY3QF8NaNe5WwLnKmOhXtvPe4cl3gNLBIVZhuQMOrcPy1siymSzxrD-NCQOS6VBp4d_gDXMeA',
+		image: 'https://www.ferra.ru/thumb/608x0/filters:quality(75):no_upscale()/imgs/2018/11/26/17/2636011/36812af23d1c5de5385f898e40c095b71ab5a95c.jpg',
 	},
 	{
 		name: 'FIFA20',
@@ -153,7 +153,7 @@ const games = [
 	{
 		name: 'PES2013',
 		rating: 5,
-		image: 'https://lh3.googleusercontent.com/proxy/kaRnScVDBH4dEXIFpbExnaY3QF8NaNe5WwLnKmOhXtvPe4cl3gNLBIVZhuQMOrcPy1siymSzxrD-NCQOS6VBp4d_gDXMeA',
+		image: 'https://www.ferra.ru/thumb/608x0/filters:quality(75):no_upscale()/imgs/2018/11/26/17/2636011/36812af23d1c5de5385f898e40c095b71ab5a95c.jpg',
 	},
 	{
 		name: 'FIFA20',
@@ -163,7 +163,7 @@ const games = [
 	{
 		name: 'PES2013',
 		rating: 5,
-		image: 'https://lh3.googleusercontent.com/proxy/kaRnScVDBH4dEXIFpbExnaY3QF8NaNe5WwLnKmOhXtvPe4cl3gNLBIVZhuQMOrcPy1siymSzxrD-NCQOS6VBp4d_gDXMeA',
+		image: 'https://www.ferra.ru/thumb/608x0/filters:quality(75):no_upscale()/imgs/2018/11/26/17/2636011/36812af23d1c5de5385f898e40c095b71ab5a95c.jpg',
 	},
 ];
 

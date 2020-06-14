@@ -17,13 +17,16 @@ const styles = EStyleSheet.create({
 	title: {
 		color: 'white',
 		textTransform: 'uppercase',
-		fontSize: '12rem',
+		fontSize: '14rem',
 		fontWeight: 'bold',
+		textAlign: 'center',
+		marginBottom: '10rem',
 	},
 	headerButton: {
-		color: 'white',
+		color: '#D51E49',
 		textTransform: 'uppercase',
-		fontSize: '10rem',
+		fontSize: '14rem',
+		fontWeight: 'bold',
 	},
 	header: {
 		flexDirection: 'row',
@@ -115,12 +118,13 @@ const FilterModal = (props) => {
 			modalVisible={props.modalVisible}
 			setModalVisible={props.changeModalVisibleHandler}
 		>
+			<Text style={styles.title}>Фильтрация игр</Text>
 			<View style={styles.header}>
-				<TouchableOpacity activeOpacity={0.7} onPress={acceptFilter}>
+				<TouchableOpacity activeOpacity={0.5} onPress={acceptFilter}>
 					<Text style={styles.headerButton}>Применить</Text>
 				</TouchableOpacity>
-				<Text style={styles.title}>Фильтрация игр</Text>
-				<TouchableOpacity activeOpacity={0.7} onPress={resetFilter}>
+				<TouchableOpacity
+					activeOpacity={0.5} onPress={resetFilter}>
 					<Text style={styles.headerButton}>Сбросить</Text>
 				</TouchableOpacity>
 			</View>

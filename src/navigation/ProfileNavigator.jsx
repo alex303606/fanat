@@ -9,6 +9,7 @@ import Ionic from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProfileSettingsScreen from '../screens/ProfileSettingsScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import { useNavigation } from '@react-navigation/native';
+import ChangePassScreen from '../screens/ChangePassScreen';
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,11 @@ const ProfileNavigator = () => {
 			headerMode="float"
 			screenOptions={{
 				...Header,
+				headerStyle: {
+					...Header.headerStyle,
+					borderBottomWidth: 1,
+					borderColor: 'rgba(255, 255, 255, 0.75)',
+				},
 			}}
 		>
 			<Stack.Screen
@@ -85,6 +91,14 @@ const ProfileNavigator = () => {
 					headerRight: () => <CloseButton/>,
 				}}
 				component={EditProfileScreen}/>
+			<Stack.Screen
+				name="ChangePass"
+				options={{
+					title: 'Изменение пароля',
+					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+					headerRight: () => <CloseButton/>,
+				}}
+				component={ChangePassScreen}/>
 		</Stack.Navigator>
 	);
 };
