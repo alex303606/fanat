@@ -10,6 +10,8 @@ import ProfileSettingsScreen from '../screens/ProfileSettingsScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import { useNavigation } from '@react-navigation/native';
 import ChangePassScreen from '../screens/ChangePassScreen';
+import AboutAppScreen from '../screens/AboutAppScreen';
+import RulesScreen from '../screens/RulesScreen';
 
 const Stack = createStackNavigator();
 
@@ -99,6 +101,22 @@ const ProfileNavigator = () => {
 					headerRight: () => <CloseButton/>,
 				}}
 				component={ChangePassScreen}/>
+			<Stack.Screen
+				name="AboutApp"
+				options={{
+					title: 'О приложении',
+					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+					headerRight: () => <CloseButton/>,
+				}}
+				component={AboutAppScreen}/>
+			<Stack.Screen
+				name="Rules"
+				options={{
+					title: 'Правила',
+					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+					headerRight: () => <CloseButton/>,
+				}}
+				component={RulesScreen}/>
 		</Stack.Navigator>
 	);
 };

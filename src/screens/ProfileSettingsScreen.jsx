@@ -28,11 +28,11 @@ const menu = [
 	},
 	{
 		title: 'Присоединиться к команде',
-		targetScreen: 'JoinTeam',
+		targetScreen: '',
 	},
 	{
 		title: 'Переключиться на профиль команды',
-		targetScreen: 'TeamProfile',
+		targetScreen: '',
 	},
 ];
 
@@ -73,7 +73,7 @@ const ProfileSettingsScreen = (props) => {
 			key={index}
 			activeOpacity={0.6}
 			style={styles.item}
-			onPress={() => navigation.navigate(item.targetScreen)}
+			onPress={() => !!item.targetScreen ? navigation.navigate(item.targetScreen) : null}
 		>
 			<View style={{flexGrow: 1, marginRight: 10}}>
 				<View style={{flexDirection: 'row'}}>
