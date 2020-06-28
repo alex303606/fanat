@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenWrapper from './ScreenWrapper';
@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import TabBar from '../components/TabBar';
 import ImageWithLoader from '../components/ImageWithLoader';
 import userAvatar from '../assets/img/userAvatar.jpg';
+import { getPlayer } from '../store/actions/profile';
 
 const styles = EStyleSheet.create({
 	$width: Dimensions.get('window').width,
@@ -56,6 +57,9 @@ const styles = EStyleSheet.create({
 });
 
 const ProfileScreen = (props) => {
+	useEffect(() => {
+		props.getPlayer();
+	}, []);
 	return (
 		<ScreenWrapper>
 			<View style={styles.page}>
@@ -70,13 +74,12 @@ const ProfileScreen = (props) => {
 							source={header}
 							resizeMode='cover'
 							style={styles.image}/>
-							<View style={styles.userAvatar}>
-								{!!props.PHOTO ?
-									<ImageWithLoader resizeMode='cover' style={styles.avatar} source={props.PHOTO}/> :
-									<Image resizeMode='cover' source={userAvatar} style={styles.avatar}/>
-								}
-							</View>
-					
+						<View style={styles.userAvatar}>
+							{!!props.PHOTO ?
+								<ImageWithLoader resizeMode='cover' style={styles.avatar} source={props.PHOTO}/> :
+								<Image resizeMode='cover' source={userAvatar} style={styles.avatar}/>
+							}
+						</View>
 					</View>
 					<View>
 						<Text style={styles.login}>{props.LOGIN}</Text>
@@ -108,6 +111,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
+			getPlayer,
 		},
 		dispatch);
 };

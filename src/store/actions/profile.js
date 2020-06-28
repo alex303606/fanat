@@ -1,4 +1,6 @@
 import {
+	GET_PLAYER_SUCCESS,
+	GET_STATS_PLAYERS_SUCCESS,
 	SIGN_IN_SUCCESS,
 	SIGN_OUT,
 } from './actionTypes';
@@ -171,4 +173,26 @@ export const editUser = (data) => {
 			}
 		});
 	};
+};
+
+export const getPlayer = () => {
+	return (dispatch, getState) => {
+		const store = getState();
+		const ID = store.profile.user.ID;
+		const params = {
+			TYPE: 'get_player',
+			ID,
+		};
+		return axios.post('', params).then(
+			response => {
+				if (response && response.data) {
+					return dispatch(getPlayerSuccess(response.data.data));
+				}
+			},
+		);
+	};
+};
+
+const getPlayerSuccess = (data) => {
+	return {type: GET_PLAYER_SUCCESS, data};
 };
