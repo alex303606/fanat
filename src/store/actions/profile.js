@@ -1,6 +1,6 @@
 import {
+	CHANGE_PROFILE_TYPE,
 	GET_PLAYER_SUCCESS,
-	GET_STATS_PLAYERS_SUCCESS,
 	SIGN_IN_SUCCESS,
 	SIGN_OUT,
 } from './actionTypes';
@@ -195,4 +195,12 @@ export const getPlayer = () => {
 
 const getPlayerSuccess = (data) => {
 	return {type: GET_PLAYER_SUCCESS, data};
+};
+
+export const changeProfileType = () => {
+	return (dispatch, getState) => {
+		const store = getState();
+		const profileType = store.profile.profileType;
+		return dispatch({type: CHANGE_PROFILE_TYPE, profileType});
+	};
 };

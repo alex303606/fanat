@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { bindActionCreators } from 'redux';
-import { signOut } from '../store/actions/profile';
+import { changeProfileType, signOut } from '../store/actions/profile';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -28,10 +28,6 @@ const menu = [
 	},
 	{
 		title: 'Присоединиться к команде',
-		targetScreen: '',
-	},
-	{
-		title: 'Переключиться на профиль команды',
 		targetScreen: '',
 	},
 ];
@@ -87,12 +83,34 @@ const ProfileSettingsScreen = (props) => {
 			/>
 		</TouchableOpacity>
 	);
+	
 	return (
 		<ScreenWrapper>
 			<View style={styles.page}>
 				<ScrollView
 					contentContainerStyle={styles.menu}>
 					{menu.map(renderItem)}
+					<TouchableOpacity
+						activeOpacity={0.6}
+						style={styles.item}
+						onPress={props.changeProfileType}
+					>
+						<View style={{flexGrow: 1, marginRight: 10}}>
+							<View style={{flexDirection: 'row'}}>
+								<Text style={styles.title}>
+									{props.profileType === 'ONE' ?
+										'Переключиться на профиль команды'
+										: 'Переключиться на профиль игрока'
+									}
+								</Text>
+							</View>
+						</View>
+						<Icon
+							name="angle-right"
+							size={styles.$size}
+							color={'white'}
+						/>
+					</TouchableOpacity>
 				</ScrollView>
 				<Button
 					onPress={() => props.signOut()}
@@ -106,8 +124,13 @@ const ProfileSettingsScreen = (props) => {
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
 			signOut,
+			changeProfileType,
 		},
 		dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(ProfileSettingsScreen);
+const mapStateToProps = state => ({
+	profileType: state.profile.profileType,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileSettingsScreen);

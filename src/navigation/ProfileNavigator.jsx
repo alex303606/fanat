@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import ChangePassScreen from '../screens/ChangePassScreen';
 import AboutAppScreen from '../screens/AboutAppScreen';
 import RulesScreen from '../screens/RulesScreen';
+import { connect } from 'react-redux';
 
 const Stack = createStackNavigator();
 
@@ -55,7 +56,7 @@ const CloseButton = () => {
 	);
 };
 
-const ProfileNavigator = () => {
+const ProfileNavigator = (props) => {
 	return (
 		<Stack.Navigator
 			initialRouteName='Profile'
@@ -72,7 +73,7 @@ const ProfileNavigator = () => {
 			<Stack.Screen
 				name="Profile"
 				options={{
-					title: 'Профиль игрока',
+					title: props.profileType === 'ONE' ? 'Профиль игрока' : 'Профиль команды',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 					headerRight: () => <SettingButton/>,
 				}}
@@ -121,4 +122,8 @@ const ProfileNavigator = () => {
 	);
 };
 
-export default ProfileNavigator;
+const mapStateToProps = state => ({
+	profileType: state.profile.profileType,
+});
+
+export default connect(mapStateToProps, null)(ProfileNavigator);
