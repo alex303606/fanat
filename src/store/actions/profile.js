@@ -1,4 +1,7 @@
-import { SIGN_IN_SUCCESS, SIGN_OUT } from './actionTypes';
+import {
+	SIGN_IN_SUCCESS,
+	SIGN_OUT,
+} from './actionTypes';
 import axios from 'axios';
 import config from '../../../config';
 import RNFetchBlob from 'rn-fetch-blob';
