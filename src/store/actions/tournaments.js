@@ -15,13 +15,15 @@ import {
 } from './actionTypes';
 
 export const registerQrCode = (code) => {
+	const {ID, GAME_TYPE} = JSON.parse(code);
 	return (dispatch, getState) => {
 		const store = getState();
 		const login = store.profile.user.LOGIN;
 		const params = {
 			TYPE: 'registerInTournaments',
 			LOGIN: login,
-			ID: code,
+			ID,
+			GAME_TYPE,
 		};
 		return axios.post('', params).then(
 			response => {
@@ -86,11 +88,12 @@ export const getCommandTournaments = () => {
 	};
 };
 
-export const getCommandTournamentById = (id) => {
-	return (dispatch, getState) => {
+export const getCommandTournamentById = (data) => {
+	const {ID} = JSON.parse(data);
+	return (dispatch) => {
 		const params = {
 			TYPE: 'getTournament',
-			ID: id,
+			ID,
 		};
 		return axios.post('', params).then(
 			response => {
