@@ -107,6 +107,7 @@ const mapStateToProps = state => ({
 	LOGIN: state.profile.user.LOGIN,
 	PHONE: state.profile.user.PHONE,
 	PHOTO: state.profile.user.PHOTO,
+	profileType: state.profile.profileType,
 });
 
 const mapDispatchToProps = dispatch => {

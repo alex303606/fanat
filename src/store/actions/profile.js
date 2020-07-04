@@ -204,3 +204,36 @@ export const changeProfileType = () => {
 		return dispatch({type: CHANGE_PROFILE_TYPE, profileType});
 	};
 };
+
+export const createTeam = (data: {
+	teamName: string;
+	photo: any;
+}) => {
+	return (dispatch, getState) => {
+		const store = getState();
+		const login = store.profile.user.LOGIN;
+		const params = [
+			{name: 'LOGIN', data: login},
+			{name: 'NAME ', data: data.teamName},
+			{name: 'API_KEY', data: config.apiKey},
+			{name: 'TYPE', data: 'add_command'},
+		];
+		if (data.photo && !!data.photo.uri) {
+			params.push({
+				name: 'image',
+				type: data.photo.type || 'image/jpg',
+				filename: 'image.jpg',
+				data: RNFetchBlob.wrap(data.photo.uri),
+			});
+		}
+		return RNFetchBlob.config({
+			trusty: true,
+		}).fetch('POST', config.baseURL, {
+			'Content-Type': 'multipart/form-data',
+		}, params).then((resp) => {
+			if (resp.data) {
+				return JSON.parse(resp.data);
+			}
+		});
+	};
+};

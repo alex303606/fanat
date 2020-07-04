@@ -84,6 +84,11 @@ const ProfileSettingsScreen = (props) => {
 		</TouchableOpacity>
 	);
 	
+	const changeProfileType = () => {
+		props.changeProfileType();
+		navigation.navigate('Profile');
+	};
+	
 	return (
 		<ScreenWrapper>
 			<View style={styles.page}>
@@ -93,7 +98,7 @@ const ProfileSettingsScreen = (props) => {
 					<TouchableOpacity
 						activeOpacity={0.6}
 						style={styles.item}
-						onPress={props.changeProfileType}
+						onPress={changeProfileType}
 					>
 						<View style={{flexGrow: 1, marginRight: 10}}>
 							<View style={{flexDirection: 'row'}}>

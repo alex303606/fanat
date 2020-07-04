@@ -13,6 +13,7 @@ import ChangePassScreen from '../screens/ChangePassScreen';
 import AboutAppScreen from '../screens/AboutAppScreen';
 import RulesScreen from '../screens/RulesScreen';
 import { connect } from 'react-redux';
+import CreateTeamNavigator from './CreateTeamNavigator';
 
 const Stack = createStackNavigator();
 
@@ -57,6 +58,10 @@ const CloseButton = () => {
 };
 
 const ProfileNavigator = (props) => {
+	if (props.profileType === 'COMMAND') {
+		return <CreateTeamNavigator/>;
+	}
+	
 	return (
 		<Stack.Navigator
 			initialRouteName='Profile'

@@ -32,8 +32,19 @@ const userReducer = (state = initialState, action) => {
 		case SIGN_IN_SUCCESS:
 			return {...state, user: action.user, userIsLoggedIn: true};
 		case GET_PLAYER_SUCCESS:
-			const {COUNT_GAMES, POINTS, TOURNAMENT, COMMAND_CAPTAIN, COMMANDS} = action.data;
-			return {...state, user: {...state.user, COUNT_GAMES, POINTS, TOURNAMENT, COMMAND_CAPTAIN, COMMANDS}};
+			const {COUNT_GAMES, POINTS, TOURNAMENT, COMMAND_CAPTAIN, COMMANDS, PICTURE} = action.data;
+			return {
+				...state,
+				user: {
+					...state.user,
+					PHOTO: PICTURE,
+					COUNT_GAMES,
+					POINTS,
+					TOURNAMENT,
+					COMMAND_CAPTAIN,
+					COMMANDS,
+				},
+			};
 		case CHANGE_PROFILE_TYPE:
 			return {...state, profileType: action.profileType === 'ONE' ? 'COMMAND' : 'ONE'};
 		case SIGN_OUT:
