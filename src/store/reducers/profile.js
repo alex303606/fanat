@@ -22,6 +22,8 @@ const initialState = {
 		CAPTAIN: {},
 		PLAYERS: [],
 		TOURNAMENTS: [],
+		COMMAND_CAPTAIN: '',
+		COMMANDS: [],
 	},
 };
 
@@ -30,8 +32,8 @@ const userReducer = (state = initialState, action) => {
 		case SIGN_IN_SUCCESS:
 			return {...state, user: action.user, userIsLoggedIn: true};
 		case GET_PLAYER_SUCCESS:
-			const {COUNT_GAMES, POINTS, TOURNAMENT} = action.data;
-			return {...state, user: {...state.user, COUNT_GAMES, POINTS, TOURNAMENT}};
+			const {COUNT_GAMES, POINTS, TOURNAMENT, COMMAND_CAPTAIN, COMMANDS} = action.data;
+			return {...state, user: {...state.user, COUNT_GAMES, POINTS, TOURNAMENT, COMMAND_CAPTAIN, COMMANDS}};
 		case CHANGE_PROFILE_TYPE:
 			return {...state, profileType: action.profileType === 'ONE' ? 'COMMAND' : 'ONE'};
 		case SIGN_OUT:
