@@ -1,4 +1,10 @@
-import { CHANGE_PROFILE_TYPE, GET_PLAYER_SUCCESS, SIGN_IN_SUCCESS, SIGN_OUT } from '../actions/actionTypes';
+import {
+	CHANGE_PROFILE_TYPE,
+	CREATE_TEAM_SUCCESS,
+	GET_PLAYER_SUCCESS, GET_TEAM_SUCCESS,
+	SIGN_IN_SUCCESS,
+	SIGN_OUT,
+} from '../actions/actionTypes';
 
 const initialState = {
 	userIsLoggedIn: false,
@@ -9,21 +15,21 @@ const initialState = {
 		LOGIN: '',
 		PHONE: '',
 		PHOTO: '',
-		COUNT_GAMES: '',
+		COUNT_GAMES: '0',
 		POINTS: 0,
 		TOURNAMENT: [],
+		COMMAND_CAPTAIN: '',
+		COMMANDS: [],
 	},
 	team: {
 		ID: '',
 		NAME: '',
 		PICTURE: '',
 		POINTS: 0,
-		COUNT_GAMES: 0,
+		COUNT_GAMES: '0',
 		CAPTAIN: {},
 		PLAYERS: [],
 		TOURNAMENTS: [],
-		COMMAND_CAPTAIN: '',
-		COMMANDS: [],
 	},
 };
 
@@ -47,6 +53,10 @@ const userReducer = (state = initialState, action) => {
 			};
 		case CHANGE_PROFILE_TYPE:
 			return {...state, profileType: action.profileType === 'ONE' ? 'COMMAND' : 'ONE'};
+		case CREATE_TEAM_SUCCESS:
+			return {...state, team: {...state.team, ID: action.id}};
+		case GET_TEAM_SUCCESS:
+			return {...state, team: action.team};
 		case SIGN_OUT:
 			return initialState;
 		default:

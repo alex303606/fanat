@@ -1,6 +1,8 @@
 import {
 	CHANGE_PROFILE_TYPE,
+	CREATE_TEAM_SUCCESS,
 	GET_PLAYER_SUCCESS,
+	GET_TEAM_SUCCESS,
 	SIGN_IN_SUCCESS,
 	SIGN_OUT,
 } from './actionTypes';
@@ -214,7 +216,7 @@ export const createTeam = (data: {
 		const login = store.profile.user.LOGIN;
 		const params = [
 			{name: 'LOGIN', data: login},
-			{name: 'NAME ', data: data.teamName},
+			{name: 'NAME', data: data.teamName},
 			{name: 'API_KEY', data: config.apiKey},
 			{name: 'TYPE', data: 'add_command'},
 		];
@@ -232,8 +234,39 @@ export const createTeam = (data: {
 			'Content-Type': 'multipart/form-data',
 		}, params).then((resp) => {
 			if (resp.data) {
-				return JSON.parse(resp.data);
+				const data = JSON.parse(resp.data);
+				if (data.data && data.data.ID) {
+					dispatch(createTeamSuccess(data.data.ID));
+				}
+				return data;
 			}
 		});
 	};
+};
+
+const createTeamSuccess = (id) => {
+	return {type: CREATE_TEAM_SUCCESS, id};
+};
+
+export const getCommand = (ID) => {
+	return (dispatch) => {
+		const params = {
+			TYPE: 'get_command',
+			ID,
+		};
+		return axios.post('', params).then(
+			response => {
+				if (response && response.data) {
+					if (response.data.data) {
+						dispatch(getTeamSuccess(response.data.data));
+					}
+					return response.data;
+				}
+			},
+		);
+	};
+};
+
+const getTeamSuccess = (team) => {
+	return {type: GET_TEAM_SUCCESS, team};
 };

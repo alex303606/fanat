@@ -32,13 +32,15 @@ const styles = EStyleSheet.create({
 	teamAvatar: {
 		marginBottom: '30rem',
 		overflow: 'hidden',
-	},
-	avatar: {
 		width: '100rem',
 		height: '100rem',
 		borderRadius: '50rem',
 		borderWidth: '2rem',
 		borderColor: 'white',
+	},
+	avatar: {
+		width: '100rem',
+		height: '100rem',
 	},
 	teamAvatarContainer: {
 		flexDirection: 'column',
@@ -79,7 +81,7 @@ const CreateTeamSuccessfullyScreen = (props) => {
 							}
 						</View>
 						<Text style={styles.teamName}>Команда</Text>
-						<Text style={styles.teamName}>Пидорасы</Text>
+						<Text style={styles.teamName}>{props.teamName}</Text>
 					</View>
 					<View style={styles.footer}>
 						<Button

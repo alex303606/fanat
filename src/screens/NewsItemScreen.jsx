@@ -56,7 +56,7 @@ const NewsItemScreen = ({route}) => {
 	
 	const getNewsItemById = id => {
 		setLoading(true);
-		wait(2000).then(() => {
+		wait(1000).then(() => {
 			setNewsItem(item);
 			setLoading(false);
 		});

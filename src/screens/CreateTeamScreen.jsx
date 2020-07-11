@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import PickerImage from '../components/PickerImage';
 import Button from '../components/Button';
 import { bindActionCreators } from 'redux';
-import { createTeam } from '../store/actions/profile';
+import { createTeam, getCommand } from '../store/actions/profile';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -56,12 +56,19 @@ const CreateTeamScreen = (props) => {
 		}
 		setLoading(true);
 		props.createTeam({teamName, photo}).then(res => {
-			setLoading(false);
 			if (!res.result && !!res.message) {
-				setError(res.message);
-				//return;
+				setLoading(false);
+				return setError(res.message);
 			}
-			navigation.navigate('CreateTeamSuccessfully');
+			const {data: {ID}} = res;
+			props.getCommand(ID).then(res => {
+				setLoading(false);
+				if (res && res.data && res.data.ID) {
+					return navigation.navigate('CreateTeamSuccessfully');
+				}
+				
+				return setError('Ошибка получения данных команды');
+			});
 		});
 	};
 	
@@ -108,6 +115,7 @@ const CreateTeamScreen = (props) => {
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
 			createTeam,
+			getCommand,
 		},
 		dispatch);
 };
