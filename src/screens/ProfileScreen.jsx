@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ScreenWrapper from './ScreenWrapper';
 import Stars from 'react-native-stars';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import header from '../assets/img/header.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TabBar from '../components/TabBar';
 import ImageWithLoader from '../components/ImageWithLoader';
 import userAvatar from '../assets/img/userAvatar.jpg';
-import { getPlayer } from '../store/actions/profile';
 
 const styles = EStyleSheet.create({
 	$width: Dimensions.get('window').width,
@@ -57,9 +55,6 @@ const styles = EStyleSheet.create({
 });
 
 const ProfileScreen = (props) => {
-	useEffect(() => {
-		props.getPlayer();
-	}, []);
 	return (
 		<ScreenWrapper>
 			<View style={styles.page}>
@@ -82,7 +77,7 @@ const ProfileScreen = (props) => {
 						</View>
 					</View>
 					<View>
-						<Text style={styles.login}>{props.LOGIN}</Text>
+						<Text style={styles.login}>{props.NAME}</Text>
 						<Stars
 							disabled
 							default={4}
@@ -101,20 +96,14 @@ const ProfileScreen = (props) => {
 	);
 };
 
-const mapStateToProps = state => ({
-	EMAIL: state.profile.user.EMAIL,
-	ID: state.profile.user.ID,
-	LOGIN: state.profile.user.LOGIN,
-	PHONE: state.profile.user.PHONE,
-	PHOTO: state.profile.user.PHOTO,
-	profileType: state.profile.profileType,
-});
-
-const mapDispatchToProps = dispatch => {
-	return bindActionCreators({
-			getPlayer,
-		},
-		dispatch);
+const mapStateToProps = state => {
+	const {profile: {team, user, profileType}} = state;
+	const isTeamProfile = profileType === 'COMMAND';
+	return {
+		NAME: isTeamProfile ? team.NAME : user.LOGIN,
+		PHOTO: isTeamProfile ? team.PICTURE : user.PHOTO,
+		isTeamProfile,
+	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
+export default connect(mapStateToProps, null)(ProfileScreen);

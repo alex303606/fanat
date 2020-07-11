@@ -1,7 +1,9 @@
 import {
 	CHANGE_PROFILE_TYPE,
 	CREATE_TEAM_SUCCESS,
-	GET_PLAYER_SUCCESS, GET_TEAM_SUCCESS,
+	EDIT_TEAM_SUCCESS,
+	GET_PLAYER_SUCCESS,
+	GET_TEAM_SUCCESS,
 	SIGN_IN_SUCCESS,
 	SIGN_OUT,
 } from '../actions/actionTypes';
@@ -57,6 +59,8 @@ const userReducer = (state = initialState, action) => {
 			return {...state, team: {...state.team, ID: action.id}};
 		case GET_TEAM_SUCCESS:
 			return {...state, team: action.team};
+		case EDIT_TEAM_SUCCESS:
+			return {...state, team: {...state.team, NAME: action.team.NAME, PICTURE: action.team.PICTURE}};
 		case SIGN_OUT:
 			return initialState;
 		default:

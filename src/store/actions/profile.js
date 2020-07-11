@@ -1,6 +1,7 @@
 import {
 	CHANGE_PROFILE_TYPE,
 	CREATE_TEAM_SUCCESS,
+	EDIT_TEAM_SUCCESS,
 	GET_PLAYER_SUCCESS,
 	GET_TEAM_SUCCESS,
 	SIGN_IN_SUCCESS,
@@ -187,7 +188,11 @@ export const getPlayer = () => {
 		};
 		return axios.post('', params).then(
 			response => {
-				if (response && response.data) {
+				if (response && response.data && response.data.data) {
+					const {data: {COMMAND_CAPTAIN}} = response.data;
+					if (!!COMMAND_CAPTAIN) {
+						dispatch(getCommand(COMMAND_CAPTAIN));
+					}
 					return dispatch(getPlayerSuccess(response.data.data));
 				}
 			},
@@ -246,6 +251,49 @@ export const createTeam = (data: {
 
 const createTeamSuccess = (id) => {
 	return {type: CREATE_TEAM_SUCCESS, id};
+};
+
+export const editTeam = (data: {
+	teamName: string;
+	photo: any;
+}) => {
+	return (dispatch, getState) => {
+		const store = getState();
+		const login = store.profile.user.LOGIN;
+		const teamId = store.profile.team.ID;
+		const params = [
+			{name: 'TYPE', data: 'edit_command'},
+			{name: 'LOGIN', data: login},
+			{name: 'ID', data: teamId},
+			{name: 'NAME', data: data.teamName},
+			{name: 'API_KEY', data: config.apiKey},
+		];
+		if (data.photo && !!data.photo.uri && !!data.photo.type) {
+			params.push({
+				name: 'image',
+				type: data.photo.type,
+				filename: 'image.jpg',
+				data: RNFetchBlob.wrap(data.photo.uri),
+			});
+		}
+		return RNFetchBlob.config({
+			trusty: true,
+		}).fetch('POST', config.baseURL, {
+			'Content-Type': 'multipart/form-data',
+		}, params).then((resp) => {
+			if (resp.data) {
+				const data = JSON.parse(resp.data);
+				if (data.data) {
+					dispatch(editTeamSuccess(data.data));
+				}
+				return data;
+			}
+		});
+	};
+};
+
+const editTeamSuccess = (team) => {
+	return {type: EDIT_TEAM_SUCCESS, team};
 };
 
 export const getCommand = (ID) => {

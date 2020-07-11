@@ -58,7 +58,7 @@ const CloseButton = () => {
 };
 
 const ProfileNavigator = (props) => {
-	if (props.profileType === 'COMMAND') {
+	if (props.profileType === 'COMMAND' && !props.teamId) {
 		return <CreateTeamNavigator/>;
 	}
 	
@@ -129,6 +129,7 @@ const ProfileNavigator = (props) => {
 
 const mapStateToProps = state => ({
 	profileType: state.profile.profileType,
+	teamId: state.profile.team.ID,
 });
 
 export default connect(mapStateToProps, null)(ProfileNavigator);
