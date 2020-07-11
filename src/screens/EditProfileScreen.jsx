@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 import Button from '../components/Button';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { regEmail } from '../utils';
-import { editTeam, editUser } from '../store/actions/profile';
+import { editUser } from '../store/actions/profile';
+import { editTeam } from '../store/actions/team';
 import { useNavigation } from '@react-navigation/native';
 
 const styles = EStyleSheet.create({

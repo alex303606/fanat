@@ -17,7 +17,7 @@ const styles = EStyleSheet.create({
 	button: {
 		marginRight: '10rem',
 	},
-	$20: '20rem',
+	$25: '25rem',
 });
 
 const TournamentsNavigator = (props) => {
@@ -31,13 +31,14 @@ const TournamentsNavigator = (props) => {
 				changeModalVisibleHandler={changeModalVisibleHandler}
 			/>
 			<Stack.Navigator
-				headerMode="float"
+				initialRouteName='Tournaments'
+				headerMode='float'
 				screenOptions={{
 					...Header,
 				}}
 			>
 				<Stack.Screen
-					name="Tournaments"
+					name='Tournaments'
 					options={{
 						title: 'Турниры',
 						cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -50,13 +51,13 @@ const TournamentsNavigator = (props) => {
 								<CustomIcon
 									color={props.filterGameIdOne || props.filterGameIdCommand ? '#D51E49' : 'white'}
 									name={'filter'}
-									size={styles.$20}/>
+									size={styles.$25}/>
 							</TouchableOpacity>
 						),
 					}}
 					component={TournamentsScreen}/>
 				<Stack.Screen
-					name="Tournament"
+					name='Tournament'
 					options={({route}) => {
 						return {
 							title: route.params && route.params.item && route.params.item.name ? route.params.item.name : 'Турнир',
@@ -65,14 +66,14 @@ const TournamentsNavigator = (props) => {
 					}}
 					component={TournamentScreen}/>
 				<Stack.Screen
-					name="Scanner"
+					name='Scanner'
 					options={{
 						title: 'QR код',
 						cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
 					}}
 					component={ScannerScreen}/>
 				<Stack.Screen
-					name="Successfully"
+					name='Successfully'
 					options={{
 						title: 'Поздравляем!',
 						cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

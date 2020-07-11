@@ -9,9 +9,9 @@ import { changeProfileType, signOut } from '../store/actions/profile';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const menu = [
+const userMenu = [
 	{
-		title: 'Редактировать профиль',
+		title: 'Редактировать профиль игрока',
 		targetScreen: 'EditProfile',
 	},
 	{
@@ -28,7 +28,26 @@ const menu = [
 	},
 	{
 		title: 'Присоединиться к команде',
-		targetScreen: '',
+		targetScreen: 'Scanner',
+	},
+	{
+		title: 'Покинуть команду',
+		targetScreen: 'LeaveTheTeam',
+	},
+];
+
+const teamMenu = [
+	{
+		title: 'Редактировать профиль команды',
+		targetScreen: 'EditProfile',
+	},
+	{
+		title: 'Правила',
+		targetScreen: 'Rules',
+	},
+	{
+		title: 'О приложении',
+		targetScreen: 'AboutApp',
 	},
 ];
 
@@ -89,6 +108,8 @@ const ProfileSettingsScreen = (props) => {
 		navigation.navigate('Profile');
 	};
 	
+	const menu = props.isTeamProfile ? teamMenu : userMenu;
+	
 	return (
 		<ScreenWrapper>
 			<View style={styles.page}>
@@ -103,9 +124,9 @@ const ProfileSettingsScreen = (props) => {
 						<View style={{flexGrow: 1, marginRight: 10}}>
 							<View style={{flexDirection: 'row'}}>
 								<Text style={styles.title}>
-									{props.profileType === 'ONE' ?
+									{props.isTeamProfile ?
+										'Переключиться на профиль игрока' :
 										'Переключиться на профиль команды'
-										: 'Переключиться на профиль игрока'
 									}
 								</Text>
 							</View>
@@ -134,8 +155,12 @@ const mapDispatchToProps = dispatch => {
 		dispatch);
 };
 
-const mapStateToProps = state => ({
-	profileType: state.profile.profileType,
-});
+const mapStateToProps = state => {
+	const {profile: {profileType}} = state;
+	const isTeamProfile = profileType === 'COMMAND';
+	return {
+		isTeamProfile,
+	};
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileSettingsScreen);

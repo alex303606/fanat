@@ -14,6 +14,9 @@ import AboutAppScreen from '../screens/AboutAppScreen';
 import RulesScreen from '../screens/RulesScreen';
 import { connect } from 'react-redux';
 import CreateTeamNavigator from './CreateTeamNavigator';
+import CreateTeamSuccessfullyScreen from '../screens/CreateTeamSuccessfullyScreen';
+import LeaveTheTeamScreen from '../screens/LeaveTheTeamScreen';
+import LeaveTheTeamConfirmationScreen from '../screens/LeaveTheTeamConfirmationScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,8 +24,8 @@ const styles = EStyleSheet.create({
 	button: {
 		marginRight: '10rem',
 	},
-	$settings: '25rem',
-	$close: '30rem',
+	$settings: '35rem',
+	$close: '35rem',
 });
 
 const SettingButton = () => {
@@ -65,7 +68,7 @@ const ProfileNavigator = (props) => {
 	return (
 		<Stack.Navigator
 			initialRouteName='Profile'
-			headerMode="float"
+			headerMode='float'
 			screenOptions={{
 				...Header,
 				headerStyle: {
@@ -76,7 +79,7 @@ const ProfileNavigator = (props) => {
 			}}
 		>
 			<Stack.Screen
-				name="Profile"
+				name='Profile'
 				options={{
 					title: props.profileType === 'ONE' ? 'Профиль игрока' : 'Профиль команды',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -84,7 +87,7 @@ const ProfileNavigator = (props) => {
 				}}
 				component={ProfileScreen}/>
 			<Stack.Screen
-				name="ProfileSettings"
+				name='ProfileSettings'
 				options={{
 					title: 'Настройки',
 					cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
@@ -92,7 +95,7 @@ const ProfileNavigator = (props) => {
 				}}
 				component={ProfileSettingsScreen}/>
 			<Stack.Screen
-				name="EditProfile"
+				name='EditProfile'
 				options={{
 					title: 'Редактирование',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -100,7 +103,7 @@ const ProfileNavigator = (props) => {
 				}}
 				component={EditProfileScreen}/>
 			<Stack.Screen
-				name="ChangePass"
+				name='ChangePass'
 				options={{
 					title: 'Изменение пароля',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -108,7 +111,7 @@ const ProfileNavigator = (props) => {
 				}}
 				component={ChangePassScreen}/>
 			<Stack.Screen
-				name="AboutApp"
+				name='AboutApp'
 				options={{
 					title: 'О приложении',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -116,13 +119,36 @@ const ProfileNavigator = (props) => {
 				}}
 				component={AboutAppScreen}/>
 			<Stack.Screen
-				name="Rules"
+				name='Rules'
 				options={{
 					title: 'Правила',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 					headerRight: () => <CloseButton/>,
 				}}
 				component={RulesScreen}/>
+			<Stack.Screen
+				name='CreateTeamSuccessfully'
+				options={{
+					title: 'Создание команды',
+					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+				}}
+				component={CreateTeamSuccessfullyScreen}/>
+			<Stack.Screen
+				name='LeaveTheTeam'
+				options={{
+					title: 'Покинуть команду',
+					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+					headerRight: () => <CloseButton/>,
+				}}
+				component={LeaveTheTeamScreen}/>
+			<Stack.Screen
+				name='LeaveTheTeamConfirmation'
+				options={{
+					title: 'Покинуть команду',
+					cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+					headerRight: () => <CloseButton/>,
+				}}
+				component={LeaveTheTeamConfirmationScreen}/>
 		</Stack.Navigator>
 	);
 };

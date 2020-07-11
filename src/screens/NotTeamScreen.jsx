@@ -41,6 +41,7 @@ const styles = EStyleSheet.create({
 const NotTeamScreen = (props) => {
 	const navigation = useNavigation();
 	const createTeam = () => navigation.navigate('CreateTeam');
+	const navigateToScannerScreen = () => navigation.navigate('Scanner');
 	const changeProfileType = () => {
 		props.changeProfileType();
 		navigation.navigate('Profile');
@@ -73,7 +74,7 @@ const NotTeamScreen = (props) => {
 						/>
 						<Button
 							style={styles.button}
-							onPress={createTeam}
+							onPress={navigateToScannerScreen}
 							title={'Присоединиться к команде'}
 						/>
 						<Button

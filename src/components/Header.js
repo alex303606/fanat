@@ -5,6 +5,7 @@ EStyleSheet.build({$rem: entireScreenWidth / 320});
 
 const styles = EStyleSheet.create({
 	$fontSize: '18rem',
+	$height: '80rem',
 });
 
 const Header = {
@@ -18,6 +19,7 @@ const Header = {
 			height: 0,
 		},
 		shadowRadius: 0,
+		height: styles.$height
 	},
 	headerTintColor: '#fff',
 	headerTitleStyle: {

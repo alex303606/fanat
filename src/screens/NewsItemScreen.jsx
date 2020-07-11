@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Linking, ScrollView, Text, View } from 'react-native';
 import ScreenWrapper from './ScreenWrapper';
 import Loader from '../components/Loader';
@@ -54,7 +54,7 @@ const NewsItemScreen = ({route}) => {
 	});
 	const [loading, setLoading] = useState(false);
 	
-	const getNewsItemById = id => {
+	const getNewsItemById = () => {
 		setLoading(true);
 		wait(1000).then(() => {
 			setNewsItem(item);
@@ -62,7 +62,7 @@ const NewsItemScreen = ({route}) => {
 		});
 	};
 	
-	React.useEffect(() => {
+	useEffect(() => {
 		if (route.params?.id) {
 			getNewsItemById(route.params.id);
 		}
@@ -72,17 +72,17 @@ const NewsItemScreen = ({route}) => {
 		return <Loader/>;
 	}
 	
-	const link = newsItem.link && newsItem.link.length > 20 ? `${newsItem.link.substring(0, 17)}...` : newsItem.link;
-	
-	const openLink = () => {
-		try {
-			Linking.canOpenURL(newsItem.link).then(() => {
-				Linking.openURL(newsItem.link);
-			});
-		} catch (e) {
-			console.log(e);
-		}
-	};
+	// const link = newsItem.link && newsItem.link.length > 20 ? `${newsItem.link.substring(0, 17)}...` : newsItem.link;
+	//
+	// const openLink = () => {
+	// 	try {
+	// 		Linking.canOpenURL(newsItem.link).then(() => {
+	// 			Linking.openURL(newsItem.link);
+	// 		});
+	// 	} catch (e) {
+	// 		console.log(e);
+	// 	}
+	// };
 	
 	return (
 		<ScreenWrapper>
@@ -102,13 +102,13 @@ const NewsItemScreen = ({route}) => {
 						>
 							{newsItem.date}
 						</Text>
-						<Text
-							numberOfLines={1}
-							style={[styles.text, {marginLeft: 10}]}
-							onPress={openLink}
-						>
-							{link}
-						</Text>
+						{/*
+							<Text
+								numberOfLines={1}
+								style={[styles.text, {marginLeft: 10}]}
+								onPress={openLink}
+							>{link}</Text>
+						*/}
 					</View>
 					<Text style={styles.contentText}>{newsItem.text}</Text>
 				</ScrollView>

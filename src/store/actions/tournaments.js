@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { allowLoadMore, wait } from '../../utils';
+import { allowLoadMore } from '../../utils';
 import config from '../../../config';
 import {
 	COMMAND_TOURNAMENTS_LOADING,
@@ -14,8 +14,7 @@ import {
 	SET_TOURNAMENT_TYPE,
 } from './actionTypes';
 
-export const registerQrCode = (code) => {
-	const {ID, GAME_TYPE} = JSON.parse(code);
+export const registerInTournaments = (ID, GAME_TYPE) => {
 	return (dispatch, getState) => {
 		const store = getState();
 		const login = store.profile.user.LOGIN;

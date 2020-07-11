@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import PickerImage from '../components/PickerImage';
 import Button from '../components/Button';
 import { bindActionCreators } from 'redux';
-import { createTeam, getCommand } from '../store/actions/profile';
+import { createTeam, getCommand } from '../store/actions/team';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 

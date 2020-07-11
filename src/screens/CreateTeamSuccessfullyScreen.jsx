@@ -6,7 +6,6 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { useNavigation } from '@react-navigation/native';
 import ImageWithLoader from '../components/ImageWithLoader';
 import userAvatar from '../assets/img/userAvatar.jpg';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 const styles = EStyleSheet.create({
@@ -58,9 +57,7 @@ const styles = EStyleSheet.create({
 
 const CreateTeamSuccessfullyScreen = (props) => {
 	const navigation = useNavigation();
-	const navigateToScannerScreen = () => {
-		navigation.navigate('Scanner');
-	};
+	const navigateToScannerScreen = () => navigation.navigate('Scanner');
 	
 	return (
 		<ScreenWrapper>
@@ -101,9 +98,4 @@ const mapStateToProps = state => ({
 	teamName: state.profile.team.NAME,
 });
 
-const mapDispatchToProps = dispatch => {
-	return bindActionCreators({},
-		dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTeamSuccessfullyScreen);
+export default connect(mapStateToProps, null)(CreateTeamSuccessfullyScreen);

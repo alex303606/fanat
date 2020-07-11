@@ -12,27 +12,27 @@ const CreateTeamNavigator = () => {
 	return (
 		<Stack.Navigator
 			initialRouteName='Profile'
-			headerMode="float"
+			headerMode='float'
 			screenOptions={{
 				...Header,
 			}}
 		>
 			<Stack.Screen
-				name="Team"
+				name='Team'
 				options={{
 					title: 'Создание команды',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 				}}
 				component={NotTeamScreen}/>
 			<Stack.Screen
-				name="CreateTeam"
+				name='CreateTeam'
 				options={{
 					title: 'Создание команды',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 				}}
 				component={CreateTeamScreen}/>
 			<Stack.Screen
-				name="CreateTeamSuccessfully"
+				name='CreateTeamSuccessfully'
 				options={{
 					title: 'Создание команды',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

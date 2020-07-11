@@ -18,13 +18,13 @@ const AuthNavigator = () => {
 		<NavigationContainer>
 			<Stack.Navigator
 				initialRouteName='Login'
-				headerMode="float"
+				headerMode='float'
 				screenOptions={{
                     ...Header,
 				}}
 			>
 				<Stack.Screen
-					name="Login"
+					name='Login'
 					options={{
 						title: 'Войдите',
                         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -32,14 +32,14 @@ const AuthNavigator = () => {
 					component={LoginScreen}
 				/>
 				<Stack.Screen
-					name="Register"
+					name='Register'
 					options={{
 						title: 'Регистрация',
 						cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 					}}
 					component={RegisterScreen}/>
 				<Stack.Screen
-					name="Recovery"
+					name='Recovery'
 					options={{
 						title: 'Восстановление аккаунта',
 						cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

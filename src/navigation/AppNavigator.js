@@ -28,13 +28,13 @@ class AppNavigatorState extends Component {
 		return (
 			<NavigationContainer>
 				<Tab.Navigator
-					initialRouteName="Tournaments"
+					initialRouteName='Tournaments'
 					tabBar={props => <TabBarBottomContainer {...props} />}
 				>
-					<Tab.Screen name="Tournaments" component={TournamentsNavigator}/>
-					<Tab.Screen name="News" component={NewsNavigator}/>
-					<Tab.Screen name="Statistics" component={StatisticsNavigator}/>
-					<Tab.Screen name="Profile" component={ProfileNavigator}/>
+					<Tab.Screen name='Tournaments' component={TournamentsNavigator}/>
+					<Tab.Screen name='News' component={NewsNavigator}/>
+					<Tab.Screen name='Statistics' component={StatisticsNavigator}/>
+					<Tab.Screen name='Profile' component={ProfileNavigator}/>
 				</Tab.Navigator>
 			</NavigationContainer>
 		);

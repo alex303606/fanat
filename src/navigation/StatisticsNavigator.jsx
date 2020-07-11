@@ -8,13 +8,13 @@ const Stack = createStackNavigator();
 const StatisticsNavigator = () => {
 	return (
 		<Stack.Navigator
-			headerMode="float"
+			headerMode='float'
 			screenOptions={{
 				...Header,
 			}}
 		>
 			<Stack.Screen
-				name="Home"
+				name='Home'
 				options={{
 					title: 'Статистика',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

@@ -9,20 +9,20 @@ const Stack = createStackNavigator();
 const NewsNavigator = () => {
 	return (
 		<Stack.Navigator
-			headerMode="float"
+			headerMode='float'
 			screenOptions={{
 				...Header,
 			}}
 		>
 			<Stack.Screen
-				name="News"
+				name='News'
 				options={{
 					title: 'Новости',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 				}}
 				component={NewsScreen}/>
 			<Stack.Screen
-				name="NewsItem"
+				name='NewsItem'
 				options={{
 					title: 'Новости',
 					cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

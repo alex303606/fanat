@@ -1,5 +1,8 @@
 import axios from 'axios';
-import { GET_STATS_COMMANDS_SUCCESS, GET_STATS_PLAYERS_SUCCESS } from './actionTypes';
+import {
+	GET_STATS_COMMANDS_SUCCESS,
+	GET_STATS_PLAYERS_SUCCESS,
+} from './actionTypes';
 
 export const getStatsPlayers = () => {
 	return (dispatch) => {

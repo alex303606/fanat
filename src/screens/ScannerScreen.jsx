@@ -9,7 +9,8 @@ import { RNCamera as Camera } from 'react-native-camera';
 import TournamentItem from '../components/TournamentItem';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getCommandTournamentById, registerQrCode } from '../store/actions/tournaments';
+import { getCommandTournamentById, registerInTournaments } from '../store/actions/tournaments';
+import { addPlayerInCommand } from '../store/actions/team';
 
 const styles = EStyleSheet.create({
 	page: {
@@ -49,9 +50,9 @@ const ScannerScreen = (props) => {
 	
 	useEffect(() => {
 		if (props.route.params && props.route.params.item) {
-			setItem(props.route.params.item);
+			return setItem(props.route.params.item);
 		}
-	}, []);
+	});
 	
 	const onSuccess = e => {
 		if (!e.data) {
@@ -66,16 +67,36 @@ const ScannerScreen = (props) => {
 	};
 	
 	const register = () => {
-		if (!code) {
+		if (!code || !!error) {
 			return;
 		}
+		
 		setLoading(true);
-		props.registerQrCode(code).then((res) => {
+		const {ID, GAME_TYPE, ACTION, COMMAND_ID} = JSON.parse(code);
+		if (!ID) {
+			return;
+		}
+		if (ACTION === 'ADD_TO_COMMAND') {
+			return props.addPlayerInCommand(COMMAND_ID).then(res => {
+				setLoading(false);
+				if (res && res.result) {
+					navigation.popToTop();
+					navigation.navigate('Successfully', {item, ACTION, COMMAND_ID});
+					return;
+				}
+				if (res && !!res.message) {
+					setError(res.message);
+				}
+			});
+		}
+		
+		props.registerInTournaments(ID, GAME_TYPE).then((res) => {
 			setLoading(false);
 			if (res && res.result) {
-				return navigation.navigate('Successfully', {item});
+				navigation.popToTop();
+				navigation.navigate('Successfully', {item});
+				return;
 			}
-			
 			if (res && !!res.message) {
 				setError(res.message);
 			}
@@ -92,13 +113,14 @@ const ScannerScreen = (props) => {
 			>
 				<View style={styles.top}>
 					{!!item && <TournamentItem item={item}/>}
-					{!!error && <Text style={styles.error}>{error}</Text>}
-					<View style={styles.bottom}>
-						{!!code && !!item ?
-							<Button loading={loading} onPress={register} title={'Зарегистрироваться'}/> :
-							<Text style={styles.title}>Отсканируйте QR код</Text>
-						}
-					</View>
+					{!!error ? <Text style={styles.error}>{error}</Text> :
+						<View style={styles.bottom}>
+							{!!code && !!item ?
+								<Button loading={loading} onPress={register} title={'Зарегистрироваться'}/> :
+								<Text style={styles.title}>Отсканируйте QR код</Text>
+							}
+						</View>
+					}
 				</View>
 				<QRCodeScanner
 					fadeIn={false}
@@ -113,8 +135,9 @@ const ScannerScreen = (props) => {
 
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
-			registerQrCode,
+			registerInTournaments,
 			getCommandTournamentById,
+			addPlayerInCommand,
 		},
 		dispatch);
 };

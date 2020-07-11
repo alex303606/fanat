@@ -5835,7 +5835,7 @@ react-native-permissions@^2.0.2, react-native-permissions@^2.1.1:
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-2.1.4.tgz#b0663839d28444d8ea6b5302303b2151ea70d2da"
   integrity sha512-R1mVPGctEJuOlxoeIBlT5270A+DKngP78rWU0dgMxIuETjGYhBRJMKOp1rQUbp6PxcahfU+PjSTSzsbja5FyDw==
 
-react-native-qrcode-scanner@^1.4.0:
+react-native-qrcode-scanner@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/react-native-qrcode-scanner/-/react-native-qrcode-scanner-1.4.1.tgz#f2b2d364897539fd12350f7dfe6ef4c2c0cb3278"
   integrity sha512-QODC1bgfyx/v4OaFGMKMyhKU2SRHBosVxCi29b0T3QDWBZmzn5BN4QGKDxJvKfMo5UPyU2BNIn1KfapySfJx7g==
