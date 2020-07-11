@@ -52,7 +52,7 @@ const ScannerScreen = (props) => {
 		if (props.route.params && props.route.params.item) {
 			return setItem(props.route.params.item);
 		}
-	});
+	}, []);
 	
 	const onSuccess = e => {
 		if (!e.data) {
