@@ -168,7 +168,7 @@ export const editUser = (data) => {
 			if (resp.data) {
 				const userData = JSON.parse(resp.data);
 				if (userData.result && userData.data) {
-					dispatch(loginUserSuccess(userData.data));
+					dispatch(getPlayer());
 				}
 				return userData;
 			}

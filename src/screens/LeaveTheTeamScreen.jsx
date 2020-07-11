@@ -73,10 +73,7 @@ const LeaveTheTeamScreen = (props) => {
 		<ScreenWrapper>
 			<View style={styles.page}>
 				<Text style={styles.title}>Ваши команды</Text>
-				{!props.myCommands.length ?
-					<View style={styles.content}>
-						<Text style={styles.title}>Вы не состоите ни в одной команде!</Text>
-					</View> :
+				{props.myCommands && !!props.myCommands.length ?
 					<ScrollView
 						keyboardShouldPersistTaps='handled'
 						scrollEnabled={true}
@@ -84,7 +81,10 @@ const LeaveTheTeamScreen = (props) => {
 						contentContainerStyle={styles.menu}
 					>
 						{props.myCommands.map(renderItem)}
-					</ScrollView>
+					</ScrollView> :
+					<View style={styles.content}>
+						<Text style={styles.title}>Вы не состоите ни в одной команде!</Text>
+					</View>
 				}
 			</View>
 		</ScreenWrapper>
@@ -92,11 +92,14 @@ const LeaveTheTeamScreen = (props) => {
 };
 
 const mapStateToProps = state => {
+	let myCommands = [];
 	const {profile: {user: {COMMANDS}}} = state;
 	const allCommands = state.stats.command;
-	const myCommands = COMMANDS.map(id => {
-		return allCommands.find(team => team.ID === id);
-	});
+	if (COMMANDS && !!COMMANDS.length && allCommands && !!allCommands.length) {
+		myCommands = COMMANDS.map(id => {
+			return allCommands.find(team => team.ID === id);
+		});
+	}
 	return {
 		myCommands,
 	};
