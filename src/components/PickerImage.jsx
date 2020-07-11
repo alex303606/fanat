@@ -35,29 +35,17 @@ const styles = EStyleSheet.create({
 export default class PickerImage extends Component {
 	selectPhotoTapped = () => {
 		ImagePicker.openPicker({
-			cropping: false,
-			compressImageQuality: 1,
-			compressImageMaxWidth: 1000,
-			compressImageMaxHeight: 1000,
+			cropping: true,
 			width: 500,
 			height: 500,
 			includeExif: true,
 			mediaType: 'photo',
-		}).then(response => {
-			if (!response || !response.path) {
+		}).then(image => {
+			if (!image || !image.path) {
 				return;
 			}
-			ImagePicker.openCropper({
-				path: response.path,
-				width: Dimensions.get('window').width,
-				height: Dimensions.get('window').width,
-			}).then(image => {
-				if (!image || !image.path) {
-					return;
-				}
-				let avatarSource = {uri: image.path, type: image.mime};
-				this.props.savePhoto(avatarSource);
-			});
+			let avatarSource = {uri: image.path, type: image.mime};
+			this.props.savePhoto(avatarSource);
 		});
 	};
 	
