@@ -80,7 +80,7 @@ const NotTeamScreen = (props) => {
 						<Button
 							style={styles.button}
 							onPress={changeProfileType}
-							title={'Переключиться на профиль игрока'}
+							title={'Отмена'}
 						/>
 					</View>
 				</View>

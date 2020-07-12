@@ -178,6 +178,7 @@ const RegisterScreen = (props) => {
 	const [codeIsInCorrect, setCodeIsInCorrect] = useState(false);
 	const [smsSended, setSmsSended] = useState(false);
 	const [code, changeCode] = useState('');
+	const [error, setError] = useState('');
 	
 	const acceptRules = () => {
 		setRules(true);
@@ -271,6 +272,9 @@ const RegisterScreen = (props) => {
 				if (!!data.message) {
 					setUserAlreadyExist(data.message.includes(login));
 					setEmailAlreadyExist(data.message.includes(email));
+					if (!data.message.includes(login) && !data.message.includes(email)) {
+						setError(data.message);
+					}
 					setLoading(false);
 				}
 			} else {
@@ -407,6 +411,7 @@ const RegisterScreen = (props) => {
 					<Text style={styles.checkBoxLabel}>С правилами ознакомлен</Text>
 				</View>
 				{!familiar && <Text style={styles.error}>Ознакомьтесь с правилами</Text>}
+				{!!error && <Text style={[styles.error, {textAlign: 'center'}]}>{error}</Text>}
 			</View>
 			<View style={styles.rules}>
 				<Text onPress={changeModalVisibleHandler} style={styles.rulesText}>Правила</Text>

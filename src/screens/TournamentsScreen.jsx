@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { getCommandTournaments, getOneTournaments, setTournamentType } from '../store/actions/tournaments';
 import TournamentItem from '../components/TournamentItem';
 import { getPlayer } from '../store/actions/profile';
+import { getStatsCommands } from '../store/actions/stats';
 
 const styles = EStyleSheet.create({
 	page: {
@@ -44,6 +45,7 @@ const TournamentsScreen = (props) => {
 		props.getOneTournaments();
 		props.getCommandTournaments();
 		props.getPlayer();
+		props.getStatsCommands();
 	}, []);
 	
 	const renderSectionHeader = ({section: {title}}) => {
@@ -89,6 +91,7 @@ const mapDispatchToProps = dispatch => {
 			getOneTournaments,
 			setTournamentType,
 			getPlayer,
+			getStatsCommands,
 		},
 		dispatch);
 };

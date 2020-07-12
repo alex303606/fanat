@@ -6,6 +6,10 @@ import TournamentItem from '../components/TournamentItem';
 import Button from '../components/Button';
 import LoremText from '../components/LoremText';
 import { useNavigation } from '@react-navigation/native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { createTeam } from '../store/actions/team';
+import { changeProfileType } from '../store/actions/profile';
 
 const styles = EStyleSheet.create({
 	page: {
@@ -21,11 +25,15 @@ const styles = EStyleSheet.create({
 		marginBottom: '20rem',
 	},
 	footer: {
-		paddingVertical: '20rem',
+		paddingVertical: '10rem',
+	},
+	button: {
+		marginVertical: '10rem',
 	},
 });
 
-const TournamentScreen = ({route}) => {
+const TournamentScreen = (props) => {
+	const {route} = props;
 	const item = route.params && route.params.item ? route.params.item : undefined;
 	const navigation = useNavigation();
 	const navigateToScannerScreen = () => {
@@ -34,6 +42,12 @@ const TournamentScreen = ({route}) => {
 		}
 		navigation.navigate('Scanner', {item});
 	};
+
+	const createTeam = () => {
+		props.changeProfileType();
+		navigation.navigate('Profile');
+	};
+	
 	return (
 		<ScreenWrapper>
 			<View style={styles.page}>
@@ -43,7 +57,20 @@ const TournamentScreen = ({route}) => {
 					<LoremText style={{color: 'white', textAlign: 'justify'}}/>
 				</ScrollView>
 				<View style={styles.footer}>
+					{item && item.TYPE === 'COMMAND' &&
+						<View>
+							{props.teamId && props.teamName ?
+								<Text style={styles.title}>Ваша команда {props.teamName}.</Text> :
+								<Button
+									style={styles.button}
+									onPress={createTeam}
+									title={'Создать команду'}
+								/>
+							}
+						</View>
+					}
 					<Button
+						style={styles.button}
 						onPress={navigateToScannerScreen}
 						title={'Принять участие'}
 					/>
@@ -53,4 +80,16 @@ const TournamentScreen = ({route}) => {
 	);
 };
 
-export default TournamentScreen;
+const mapDispatchToProps = dispatch => {
+	return bindActionCreators({
+			changeProfileType,
+		},
+		dispatch);
+};
+
+const mapStateToProps = state => ({
+	teamName: state.profile.team.NAME,
+	teamId: state.profile.team.ID,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TournamentScreen);

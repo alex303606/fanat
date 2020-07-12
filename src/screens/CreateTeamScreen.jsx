@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 import ScreenWrapper from './ScreenWrapper';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -41,6 +41,12 @@ const styles = EStyleSheet.create({
 	},
 });
 const CreateTeamScreen = (props) => {
+	useEffect(() => {
+		// Указываем, как сбросить этот эффект:
+		return function cleanup() {
+			setLoading(false);
+		};
+	});
 	const navigation = useNavigation();
 	const [teamName, changeTeamName] = useState('');
 	const [photo, setPhoto] = useState('');
