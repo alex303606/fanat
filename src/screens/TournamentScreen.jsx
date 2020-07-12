@@ -8,7 +8,6 @@ import LoremText from '../components/LoremText';
 import { useNavigation } from '@react-navigation/native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { createTeam } from '../store/actions/team';
 import { changeProfileType } from '../store/actions/profile';
 
 const styles = EStyleSheet.create({
@@ -43,7 +42,7 @@ const TournamentScreen = (props) => {
 		navigation.navigate('Scanner', {item});
 	};
 
-	const createTeam = () => {
+	const createTeamHandler = () => {
 		props.changeProfileType();
 		navigation.navigate('Profile');
 	};
@@ -63,7 +62,7 @@ const TournamentScreen = (props) => {
 								<Text style={styles.title}>Ваша команда {props.teamName}.</Text> :
 								<Button
 									style={styles.button}
-									onPress={createTeam}
+									onPress={createTeamHandler}
 									title={'Создать команду'}
 								/>
 							}
