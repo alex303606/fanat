@@ -46,14 +46,16 @@ const TournamentScreen = (props) => {
 		props.changeProfileType();
 		navigation.navigate('Profile');
 	};
-	
+
 	return (
 		<ScreenWrapper>
 			<View style={styles.page}>
 				{!!item && <TournamentItem item={item}/>}
 				<Text style={styles.title}>ПРАВИЛА ТУРНИРА</Text>
 				<ScrollView contentContainerStyle={{flexGrow: 1}}>
-					<LoremText style={{color: 'white', textAlign: 'justify'}}/>
+					<Text style={{color: 'white', textAlign: 'justify'}}>
+						{item.GAME_INFO || ''}
+					</Text>
 				</ScrollView>
 				<View style={styles.footer}>
 					{item && item.TYPE === 'COMMAND' &&
